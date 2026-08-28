@@ -1,7 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" aria-label="Sidings house mark">
-  <path fill="#B4DBF1" d="M13 45 50 14l37 31v42H13z"/>
-  <path fill="#fff" d="M20 47 50 22l30 25v33H20z"/>
-  <path fill="#B4DBF1" d="M69 19h9v16h-9z"/>
-  <path stroke="#BCE290" stroke-width="5" d="M27 47h46M27 57h46M27 67h46"/>
-  <path fill="#F3D3D7" d="M44 70h12v10H44z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 100" role="img" aria-label="Sidings cabin mark">
+  <path fill="#8bd63f" stroke="#050505" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" d="M25 67V39c-8 0-11-10-4-16-2-9 5-17 14-17s16 8 14 17c7 6 4 16-4 16v28z"/>
+  <path fill="#58bd08" stroke="#050505" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" d="M74 66V36c-9-1-12-12-5-18-2-9 5-16 14-16 8 0 15 7 14 16 7 5 6 15-1 18v30z"/>
+  <path fill="#b7e76a" stroke="#050505" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" d="M91 67c13 0 19-10 12-18 5-7 0-16-7-17 2-10-5-18-14-18-10 0-17 9-14 19-7 4-7 14 0 17-5 8 1 17 23 17z"/>
+  <path fill="#805433" d="M31 39h9v33h-9z"/>
+  <path fill="#050505" d="M31 39h9v5h-9z"/>
+  <path fill="#c79068" stroke="#050505" stroke-linecap="round" stroke-linejoin="round" stroke-width="6" d="M15 82 58 20l47 62z"/>
+  <path fill="#c79068" stroke="#050505" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" d="M22 82 58 31l39 51z"/>
+  <path fill="none" stroke="#050505" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M43 55h35M51 35h15"/>
+  <path fill="#ffd34c" stroke="#050505" stroke-linejoin="round" stroke-width="4" d="M38 64h21v19H38z"/>
+  <path fill="none" stroke="#050505" stroke-width="4" d="M38 71h21M49 64v19"/>
+  <path fill="#805433" stroke="#050505" stroke-linejoin="round" stroke-width="4" d="M67 64h20v24H67z"/>
+  <path fill="#ffc928" d="M69 66h16v5H69z"/>
+  <path fill="none" stroke="#050505" stroke-linecap="round" stroke-width="3" d="M71 78v3"/>
+  <path fill="#b7e76a" stroke="#050505" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" d="M10 81c4 0 4 3 8 3s4-3 8-3 4 3 8 3 4-3 8-3 4 3 8 3 4-3 8-3 4 3 8 3 4-3 8-3 4 3 8 3 4-3 8-3 4 3 8 3 4-3 8-3 4 3 8 3v11H10z"/>
+  <path fill="#5fc8ed" d="M106 6 109 12 115 15 109 18 106 24 103 18 97 15 103 12z"/>
+  <path fill="#f95d87" d="M109 54 111 58 116 60 111 62 109 67 106 62 102 60 106 58z"/>
+  <path fill="#f8c544" d="M10 50a3 3 0 1 1 6 0v2h2a3 3 0 1 1 0 6h-2v2a3 3 0 1 1-6 0v-2H8a3 3 0 1 1 0-6h2z"/>
+  <circle cx="84" cy="5" r="3" fill="#84d044"/>
+  <circle cx="3" cy="62" r="3" fill="#5fc8ed"/>
 </svg>

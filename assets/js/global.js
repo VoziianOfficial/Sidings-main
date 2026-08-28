@@ -4,8 +4,7 @@
   if (!config) return;
 
   document.title = config.browserTitle;
-  const icon = document.querySelector('link[rel="icon"]');
-  if (icon) icon.href = config.favicon;
+  document.querySelectorAll('link[rel*="icon"]').forEach((icon) => { icon.href = config.favicon; });
   document.querySelectorAll('[data-company]').forEach((el) => { el.textContent = config.companyName; });
   document.querySelectorAll('[data-logo]').forEach((el) => { el.src = config.logo; });
   document.querySelectorAll('[data-email]').forEach((el) => { el.textContent = config.email; el.href = `mailto:${config.email}`; });
