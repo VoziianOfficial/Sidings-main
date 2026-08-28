@@ -69,12 +69,36 @@
 
   const setupSwiper = (selector, options) => {
     const element = document.querySelector(selector);
-    if (!element || !window.Swiper || element.swiper || element.dataset.swiperReady === 'true') return;
+    if (!element || !window.Swiper) return;
     const wrapper = element.querySelector('.swiper-wrapper');
-    if (!wrapper || !element.querySelector('.swiper-slide')) return;
-    wrapper.style.gap = '0px';
-    element.dataset.swiperReady = 'true';
-    new window.Swiper(element, { loop: true, grabCursor: true, simulateTouch: true, watchSlidesProgress: true, ...options });
+    const slides = [...element.querySelectorAll('.swiper-slide')];
+    if (!wrapper || !slides.length) return;
+    const desktopQuery = window.matchMedia('(min-width: 851px)');
+    const init = () => {
+      if (element.swiper) return;
+      wrapper.style.gap = '0px';
+      element.dataset.swiperReady = 'true';
+      new window.Swiper(element, {
+        loop: slides.length > 1,
+        loopAdditionalSlides: desktopQuery.matches ? slides.length : 1,
+        slidesPerGroup: 1,
+        grabCursor: true,
+        simulateTouch: true,
+        watchSlidesProgress: true,
+        ...options
+      });
+    };
+    const rebuild = () => {
+      if (element.swiper) element.swiper.destroy(true, true);
+      element.removeAttribute('data-swiper-ready');
+      init();
+    };
+    init();
+    if (typeof desktopQuery.addEventListener === 'function') {
+      desktopQuery.addEventListener('change', rebuild);
+    } else if (typeof desktopQuery.addListener === 'function') {
+      desktopQuery.addListener(rebuild);
+    }
   };
   setupSwiper('.testimonial-swiper', { slidesPerView: 'auto', spaceBetween: 14, autoplay: { delay: 5200, disableOnInteraction: false } });
 
