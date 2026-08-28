@@ -1,7 +1,7 @@
 /* Installation and repair controls. Every interaction changes the illustrated structure. */
 (function () {
-  if (window.__SIDINGS_SERVICE_READY__) return;
-  window.__SIDINGS_SERVICE_READY__ = true;
+  if (window.__SITE_SERVICE_READY__) return;
+  window.__SITE_SERVICE_READY__ = true;
 
   const setActive = (selector, active) => document.querySelectorAll(selector).forEach((item) => {
     const isActive = item === active;

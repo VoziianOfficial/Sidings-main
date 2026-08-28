@@ -1,19 +1,46 @@
 /* Shared configuration, navigation and small non-conflicting reveal effects. */
 (function () {
-  if (window.__SIDINGS_GLOBAL_READY__) return;
-  window.__SIDINGS_GLOBAL_READY__ = true;
+  if (window.__SITE_GLOBAL_READY__) return;
+  window.__SITE_GLOBAL_READY__ = true;
 
-  const config = window.SIDINGS_CONFIG;
+  const config = window.SiteConfig;
   if (!config) return;
 
-  if (document.body?.dataset.useConfigTitle === 'true') {
-    document.title = config.browserTitle;
+  const clean = (value) => (typeof value === 'string' ? value.trim() : '');
+  const companyName = clean(config.companyName);
+  const logo = clean(config.logo);
+  const favicon = clean(config.favicon);
+  const email = clean(config.email);
+  const disclaimer = clean(config.disclaimer);
+  const browserTitle = clean(config.browserTitle);
+  const pageTitle = clean(document.body?.dataset.pageTitle);
+
+  if (browserTitle) {
+    document.title = pageTitle ? `${browserTitle} | ${pageTitle}` : browserTitle;
   }
-  document.querySelectorAll('link[rel*="icon"]').forEach((icon) => { icon.href = config.favicon; });
-  document.querySelectorAll('[data-company]').forEach((el) => { el.textContent = config.companyName; });
-  document.querySelectorAll('[data-logo]').forEach((el) => { el.src = config.logo; });
-  document.querySelectorAll('[data-email]').forEach((el) => { el.textContent = config.email; el.href = `mailto:${config.email}`; });
-  document.querySelectorAll('[data-disclaimer]').forEach((el) => { el.textContent = config.disclaimer; });
+  if (favicon) {
+    document.querySelectorAll('link[rel*="icon"]').forEach((icon) => { icon.href = favicon; });
+  }
+  if (companyName) {
+    document.querySelectorAll('[data-company]').forEach((el) => { el.textContent = companyName; });
+  }
+  if (logo) {
+    document.querySelectorAll('[data-logo]').forEach((el) => {
+      el.src = logo;
+      if (!el.alt && companyName) el.alt = companyName;
+    });
+  }
+  document.querySelectorAll('[data-email]').forEach((el) => {
+    if (!email) {
+      el.removeAttribute('href');
+      return;
+    }
+    el.textContent = email;
+    el.href = `mailto:${email}`;
+  });
+  if (disclaimer) {
+    document.querySelectorAll('[data-disclaimer]').forEach((el) => { el.textContent = disclaimer; });
+  }
 
   const header = document.querySelector('.site-header');
   window.addEventListener('scroll', () => header?.classList.toggle('compact', window.scrollY > 30), { passive: true });

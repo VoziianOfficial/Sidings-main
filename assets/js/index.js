@@ -1,7 +1,7 @@
 /* Home-only interactions: billboard, material controls, sliders and comparison. */
 (function () {
-  if (window.__SIDINGS_INDEX_READY__) return;
-  window.__SIDINGS_INDEX_READY__ = true;
+  if (window.__SITE_INDEX_READY__) return;
+  window.__SITE_INDEX_READY__ = true;
 
   const billboard = document.querySelector('.billboard');
   if (billboard) {

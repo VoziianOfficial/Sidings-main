@@ -1,5 +1,5 @@
 /* Edit this file to update brand information across the whole site. */
-window.SIDINGS_CONFIG = {
+window.SiteConfig = {
   companyName: 'SIDINGS',
   logo: 'assets/icons/logo.svg',
   favicon: 'assets/icons/logo.svg',
