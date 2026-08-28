@@ -98,6 +98,13 @@
     unlockPageScroll();
     toggle?.setAttribute('aria-expanded', 'false');
   };
+  const closeDropdowns = () => {
+    document.querySelectorAll('.dropdown.open').forEach((dropdown) => {
+      dropdown.classList.remove('open');
+      dropdown.querySelector('.drop-trigger')?.setAttribute('aria-expanded', 'false');
+      dropdown.querySelector('.drop-menu')?.setAttribute('aria-hidden', 'true');
+    });
+  };
 
   if (toggle && nav) {
     if (!nav.id) nav.id = 'site-navigation';
@@ -161,6 +168,17 @@
     });
   });
 
+  const desktopMenuQuery = window.matchMedia('(min-width: 1025px)');
+  const syncNavigationMode = () => {
+    if (desktopMenuQuery.matches) closeMenu();
+    closeDropdowns();
+  };
+  if (typeof desktopMenuQuery.addEventListener === 'function') {
+    desktopMenuQuery.addEventListener('change', syncNavigationMode);
+  } else if (typeof desktopMenuQuery.addListener === 'function') {
+    desktopMenuQuery.addListener(syncNavigationMode);
+  }
+
   document.querySelectorAll('.search').forEach((button) => {
     button.type = 'button';
     button.setAttribute('aria-label', button.getAttribute('aria-label') || 'Search site');
@@ -188,11 +206,7 @@
 
   document.addEventListener('click', (event) => {
     if (!event.target.closest('.dropdown')) {
-      document.querySelectorAll('.dropdown.open').forEach((dropdown) => {
-        dropdown.classList.remove('open');
-        dropdown.querySelector('.drop-trigger')?.setAttribute('aria-expanded', 'false');
-        dropdown.querySelector('.drop-menu')?.setAttribute('aria-hidden', 'true');
-      });
+      closeDropdowns();
     }
   });
 
@@ -255,10 +269,6 @@
   document.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;
     closeMenu();
-    document.querySelectorAll('.dropdown.open').forEach((dropdown) => {
-      dropdown.classList.remove('open');
-      dropdown.querySelector('.drop-trigger')?.setAttribute('aria-expanded', 'false');
-      dropdown.querySelector('.drop-menu')?.setAttribute('aria-hidden', 'true');
-    });
+    closeDropdowns();
   });
 }());

@@ -1,4 +1,4 @@
-/* Home-only interactions: billboard, material controls, sliders and comparison. */
+/* Home-only interactions: billboard, material controls and testimonial slider. */
 (function () {
   if (window.__SITE_INDEX_READY__) return;
   window.__SITE_INDEX_READY__ = true;
@@ -67,14 +67,6 @@
     });
   });
 
-  const repairModel = document.querySelector('.repair-model');
-  let repairLocked = false;
-  const runRepair = () => { repairLocked = !repairLocked; repairModel?.classList.toggle('is-repaired', repairLocked); };
-  repairModel?.addEventListener('click', runRepair);
-  repairModel?.addEventListener('pointerenter', () => repairModel.classList.add('is-repaired'));
-  repairModel?.addEventListener('pointerleave', () => { if (!repairLocked) repairModel.classList.remove('is-repaired'); });
-  repairModel?.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); runRepair(); } });
-
   const setupSwiper = (selector, options) => {
     const element = document.querySelector(selector);
     if (!element || !window.Swiper || element.swiper || element.dataset.swiperReady === 'true') return;
@@ -84,26 +76,6 @@
     element.dataset.swiperReady = 'true';
     new window.Swiper(element, { loop: true, grabCursor: true, simulateTouch: true, watchSlidesProgress: true, ...options });
   };
-  setupSwiper('.project-swiper', { slidesPerView: 'auto', spaceBetween: 14, navigation: { nextEl: '.show-next', prevEl: '.show-prev' }, on: { init(swiper) { swiper.slides.forEach((slide) => slide.classList.toggle('active', slide.classList.contains('swiper-slide-active'))); }, slideChange(swiper) { swiper.slides.forEach((slide) => slide.classList.toggle('active', slide.classList.contains('swiper-slide-active'))); } } });
   setupSwiper('.testimonial-swiper', { slidesPerView: 'auto', spaceBetween: 14, autoplay: { delay: 5200, disableOnInteraction: false } });
-
-  const comparison = document.querySelector('.compare');
-  if (comparison) {
-    const before = comparison.querySelector('.compare-before');
-    const handle = comparison.querySelector('.compare-handle');
-    if (before && handle) {
-      let dragging = false;
-      const update = (event) => {
-        const rect = comparison.getBoundingClientRect();
-        const point = event.touches ? event.touches[0] : event;
-        const percent = Math.max(3, Math.min(97, ((point.clientX - rect.left) / rect.width) * 100));
-        before.style.width = `${percent}%`;
-        handle.style.left = `${percent}%`;
-      };
-      comparison.addEventListener('pointerdown', (event) => { dragging = true; comparison.setPointerCapture(event.pointerId); update(event); });
-      comparison.addEventListener('pointermove', (event) => { if (dragging) update(event); });
-      comparison.addEventListener('pointerup', () => { dragging = false; });
-    }
-  }
 
 }());
