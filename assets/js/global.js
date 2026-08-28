@@ -3,8 +3,7 @@
   if (window.__SITE_GLOBAL_READY__) return;
   window.__SITE_GLOBAL_READY__ = true;
 
-  const config = window.SiteConfig;
-  if (!config) return;
+  const config = window.SiteConfig || {};
 
   const clean = (value) => (typeof value === 'string' ? value.trim() : '');
   const companyName = clean(config.companyName);
@@ -43,7 +42,37 @@
   }
 
   const header = document.querySelector('.site-header');
-  window.addEventListener('scroll', () => header?.classList.toggle('compact', window.scrollY > 30), { passive: true });
+  let scrollTicking = false;
+  const syncHeader = () => {
+    header?.classList.toggle('compact', window.scrollY > 30);
+    scrollTicking = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (scrollTicking) return;
+    scrollTicking = true;
+    window.requestAnimationFrame(syncHeader);
+  }, { passive: true });
+  syncHeader();
+
+  const lazyBackgrounds = [...document.querySelectorAll('[data-bg]')];
+  const loadBackground = (element) => {
+    const source = clean(element.dataset.bg);
+    if (!source || element.dataset.bgLoaded === 'true') return;
+    element.style.setProperty('--lazy-bg', `url("${new URL(source, document.baseURI).href}")`);
+    element.dataset.bgLoaded = 'true';
+  };
+  if (lazyBackgrounds.length && 'IntersectionObserver' in window) {
+    const backgroundObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        loadBackground(entry.target);
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: '250px 0px' });
+    lazyBackgrounds.forEach((element) => backgroundObserver.observe(element));
+  } else {
+    lazyBackgrounds.forEach(loadBackground);
+  }
 
   const nav = document.querySelector('.nav');
   const toggle = document.querySelector('.mobile-toggle');
@@ -125,7 +154,7 @@
         { href: 'index.html', text: 'main about services faq contact siding installation repair vinyl fiber cement board batten exterior weather' },
         { href: 'installation.html', text: 'siding installation facade zoning profile scale trim composer material vinyl fiber cement engineered wood' },
         { href: 'repair.html', text: 'siding repair damage exterior facade' },
-        { href: 'privacy.html', text: 'privacy policy personal information contact form' },
+        { href: 'privacy-policy.html', text: 'privacy policy personal information contact form' },
         { href: 'terms.html', text: 'terms of use legal informational content' },
         { href: 'cookies.html', text: 'cookies notice browser storage tracking' }
       ];
@@ -143,6 +172,7 @@
       document.querySelectorAll('.dropdown.open').forEach((dropdown) => {
         dropdown.classList.remove('open');
         dropdown.querySelector('.drop-trigger')?.setAttribute('aria-expanded', 'false');
+        dropdown.querySelector('.drop-menu')?.setAttribute('aria-hidden', 'true');
       });
     }
   });
@@ -209,13 +239,7 @@
     document.querySelectorAll('.dropdown.open').forEach((dropdown) => {
       dropdown.classList.remove('open');
       dropdown.querySelector('.drop-trigger')?.setAttribute('aria-expanded', 'false');
+      dropdown.querySelector('.drop-menu')?.setAttribute('aria-hidden', 'true');
     });
   });
-
-  if (window.AOS) {
-    document.querySelectorAll('.page-intro, .faq-title, .services-head > div:first-child').forEach((el) => el.setAttribute('data-aos', 'fade-up'));
-    if (document.querySelector('[data-aos]')) {
-      window.AOS.init({ duration: 560, once: true, offset: 80, easing: 'ease-out-cubic', disable: 'mobile' });
-    }
-  }
 }());

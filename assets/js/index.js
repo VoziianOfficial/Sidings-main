@@ -26,7 +26,17 @@
       topDown = !topDown;
     };
     if (images.length > 1) window.setInterval(reveal, 7000);
-    window.addEventListener('scroll', () => { billboard.style.transform = `scale(${1 + Math.min(window.scrollY, 800) / 30000})`; }, { passive: true });
+    let billboardTicking = false;
+    const syncBillboard = () => {
+      billboard.style.transform = `scale(${1 + Math.min(window.scrollY, 800) / 30000})`;
+      billboardTicking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (billboardTicking) return;
+      billboardTicking = true;
+      window.requestAnimationFrame(syncBillboard);
+    }, { passive: true });
+    syncBillboard();
   }
 
   document.querySelectorAll('button[data-material]').forEach((button) => {

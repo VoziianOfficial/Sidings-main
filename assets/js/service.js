@@ -25,8 +25,48 @@
   document.querySelectorAll('[data-warp]').forEach((button) => { button.type = 'button'; button.addEventListener('click', () => { const value = { low: '3deg', medium: '8deg', high: '14deg' }[button.dataset.warp]; if (!value) return; document.querySelector('.warp')?.style.setProperty('--warp', value); }); });
   document.querySelector('.restore-warp')?.addEventListener('click', (event) => { event.currentTarget.type = 'button'; document.querySelector('.warp')?.classList.add('restore'); });
   const microscope = document.querySelector('.micro-surface');
-  microscope?.addEventListener('pointermove', (event) => { const rect = microscope.getBoundingClientRect(); const lens = microscope.querySelector('.lens'); if (!lens) return; const x = event.clientX - rect.left; const y = event.clientY - rect.top; lens.style.left = `${x}px`; lens.style.top = `${y}px`; lens.textContent = x < rect.width * 0.25 ? 'Lifted Edge' : x < rect.width * 0.5 ? 'Hairline Crack' : x < rect.width * 0.75 ? 'Separation' : 'Puncture'; });
+  if (microscope) {
+    let latestMicroEvent = null;
+    let microTicking = false;
+    microscope.addEventListener('pointermove', (event) => {
+      latestMicroEvent = event;
+      if (microTicking) return;
+      microTicking = true;
+      window.requestAnimationFrame(() => {
+        const rect = microscope.getBoundingClientRect();
+        const lens = microscope.querySelector('.lens');
+        if (!lens || !latestMicroEvent) {
+          microTicking = false;
+          return;
+        }
+        const x = latestMicroEvent.clientX - rect.left;
+        const y = latestMicroEvent.clientY - rect.top;
+        lens.style.left = `${x}px`;
+        lens.style.top = `${y}px`;
+        lens.textContent = x < rect.width * 0.25 ? 'Lifted Edge' : x < rect.width * 0.5 ? 'Hairline Crack' : x < rect.width * 0.75 ? 'Separation' : 'Puncture';
+        microTicking = false;
+      });
+    });
+  }
   document.querySelectorAll('.case').forEach((card) => card.addEventListener('pointerdown', () => { const stack = card.parentElement; if (!stack) return; card.classList.add('top-out'); window.setTimeout(() => { card.classList.remove('top-out'); stack.append(card); }, 570); }));
   const scanner = document.querySelector('.scanner');
-  scanner?.addEventListener('pointermove', (event) => { const rect = scanner.getBoundingClientRect(); const band = scanner.querySelector('.scanner-band'); if (!band) return; band.style.left = `${Math.max(0, Math.min(rect.width - 80, event.clientX - rect.left))}px`; });
+  if (scanner) {
+    let latestScannerEvent = null;
+    let scannerTicking = false;
+    scanner.addEventListener('pointermove', (event) => {
+      latestScannerEvent = event;
+      if (scannerTicking) return;
+      scannerTicking = true;
+      window.requestAnimationFrame(() => {
+        const rect = scanner.getBoundingClientRect();
+        const band = scanner.querySelector('.scanner-band');
+        if (!band || !latestScannerEvent) {
+          scannerTicking = false;
+          return;
+        }
+        band.style.left = `${Math.max(0, Math.min(rect.width - 80, latestScannerEvent.clientX - rect.left))}px`;
+        scannerTicking = false;
+      });
+    });
+  }
 }());
