@@ -22,25 +22,37 @@
       });
       topDown = !topDown;
     };
-    window.setInterval(reveal, 7000);
+    if (images.length > 1) window.setInterval(reveal, 7000);
     window.addEventListener('scroll', () => { billboard.style.transform = `scale(${1 + Math.min(window.scrollY, 800) / 30000})`; }, { passive: true });
   }
 
-  document.querySelectorAll('[data-material]').forEach((button) => button.addEventListener('click', () => {
-    document.querySelectorAll('[data-material]').forEach((item) => item.classList.remove('active'));
+  document.querySelectorAll('button[data-material]').forEach((button) => {
+    button.type = 'button';
+    button.setAttribute('aria-pressed', String(button.classList.contains('active')));
+    button.addEventListener('click', () => {
+    document.querySelectorAll('button[data-material]').forEach((item) => item.classList.remove('active'));
+    document.querySelectorAll('button[data-material]').forEach((item) => item.setAttribute('aria-pressed', 'false'));
     button.classList.add('active');
+    button.setAttribute('aria-pressed', 'true');
     const material = button.dataset.material;
     const wall = document.querySelector('.material-wall');
     const copy = document.querySelector('.matter-copy');
     if (wall) wall.dataset.material = material;
     if (copy) copy.textContent = { vinyl: 'Vinyl keeps the composition crisp with steady horizontal rhythm.', fiber: 'Fiber cement brings a denser, finer panel cadence.', board: 'Board & batten turns the elevation vertical and architectural.' }[material];
-  }));
-  document.querySelectorAll('[data-rhythm]').forEach((button) => button.addEventListener('click', () => {
-    document.querySelectorAll('[data-rhythm]').forEach((item) => item.classList.remove('active'));
+    });
+  });
+  document.querySelectorAll('button[data-rhythm]').forEach((button) => {
+    button.type = 'button';
+    button.setAttribute('aria-pressed', String(button.classList.contains('active')));
+    button.addEventListener('click', () => {
+    document.querySelectorAll('button[data-rhythm]').forEach((item) => item.classList.remove('active'));
+    document.querySelectorAll('button[data-rhythm]').forEach((item) => item.setAttribute('aria-pressed', 'false'));
     button.classList.add('active');
+    button.setAttribute('aria-pressed', 'true');
     const facade = document.querySelector('.rhythm-facade');
     if (facade) facade.dataset.rhythm = button.dataset.rhythm;
-  }));
+    });
+  });
 
   const repairModel = document.querySelector('.repair-model');
   let repairLocked = false;
@@ -52,7 +64,11 @@
 
   const setupSwiper = (selector, options) => {
     const element = document.querySelector(selector);
-    if (!element || !window.Swiper) return;
+    if (!element || !window.Swiper || element.swiper || element.dataset.swiperReady === 'true') return;
+    const wrapper = element.querySelector('.swiper-wrapper');
+    if (!wrapper || !element.querySelector('.swiper-slide')) return;
+    wrapper.style.gap = '0px';
+    element.dataset.swiperReady = 'true';
     new window.Swiper(element, { loop: true, grabCursor: true, simulateTouch: true, watchSlidesProgress: true, ...options });
   };
   setupSwiper('.project-swiper', { slidesPerView: 'auto', spaceBetween: 14, navigation: { nextEl: '.show-next', prevEl: '.show-prev' }, on: { init(swiper) { swiper.slides.forEach((slide) => slide.classList.toggle('active', slide.classList.contains('swiper-slide-active'))); }, slideChange(swiper) { swiper.slides.forEach((slide) => slide.classList.toggle('active', slide.classList.contains('swiper-slide-active'))); } } });
@@ -62,28 +78,37 @@
   if (comparison) {
     const before = comparison.querySelector('.compare-before');
     const handle = comparison.querySelector('.compare-handle');
-    let dragging = false;
-    const update = (event) => {
-      const rect = comparison.getBoundingClientRect();
-      const point = event.touches ? event.touches[0] : event;
-      const percent = Math.max(3, Math.min(97, ((point.clientX - rect.left) / rect.width) * 100));
-      before.style.width = `${percent}%`;
-      handle.style.left = `${percent}%`;
-    };
-    comparison.addEventListener('pointerdown', (event) => { dragging = true; comparison.setPointerCapture(event.pointerId); update(event); });
-    comparison.addEventListener('pointermove', (event) => { if (dragging) update(event); });
-    comparison.addEventListener('pointerup', () => { dragging = false; });
+    if (before && handle) {
+      let dragging = false;
+      const update = (event) => {
+        const rect = comparison.getBoundingClientRect();
+        const point = event.touches ? event.touches[0] : event;
+        const percent = Math.max(3, Math.min(97, ((point.clientX - rect.left) / rect.width) * 100));
+        before.style.width = `${percent}%`;
+        handle.style.left = `${percent}%`;
+      };
+      comparison.addEventListener('pointerdown', (event) => { dragging = true; comparison.setPointerCapture(event.pointerId); update(event); });
+      comparison.addEventListener('pointermove', (event) => { if (dragging) update(event); });
+      comparison.addEventListener('pointerup', () => { dragging = false; });
+    }
   }
 
   const form = document.querySelector('.contact-form');
+  form?.querySelectorAll('input, textarea').forEach((field) => {
+    if (!field.getAttribute('aria-label') && field.getAttribute('placeholder')) {
+      field.setAttribute('aria-label', field.getAttribute('placeholder'));
+    }
+  });
   form?.addEventListener('submit', async (event) => {
     event.preventDefault();
     const result = form.querySelector('.form-result');
     try {
       const response = await fetch('send.php', { method: 'POST', body: new FormData(form) });
       const data = await response.json();
-      result.textContent = data.success ? 'Успешно отправлено' : (data.message || 'Не удалось отправить.');
+      if (result) result.textContent = data.success ? 'Message sent successfully.' : (data.message || 'Unable to send your message.');
       if (data.success) form.reset();
-    } catch { result.textContent = 'Не удалось отправить.'; }
+    } catch {
+      if (result) result.textContent = 'Unable to send your message.';
+    }
   });
 }());

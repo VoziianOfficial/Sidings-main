@@ -3,7 +3,9 @@
   const config = window.SIDINGS_CONFIG;
   if (!config) return;
 
-  document.title = config.browserTitle;
+  if (document.body?.dataset.useConfigTitle === 'true') {
+    document.title = config.browserTitle;
+  }
   document.querySelectorAll('link[rel*="icon"]').forEach((icon) => { icon.href = config.favicon; });
   document.querySelectorAll('[data-company]').forEach((el) => { el.textContent = config.companyName; });
   document.querySelectorAll('[data-logo]').forEach((el) => { el.src = config.logo; });
@@ -12,11 +14,113 @@
 
   const header = document.querySelector('.site-header');
   window.addEventListener('scroll', () => header?.classList.toggle('compact', window.scrollY > 30), { passive: true });
-  document.querySelector('.mobile-toggle')?.addEventListener('click', () => document.querySelector('.nav')?.classList.toggle('open'));
-  document.querySelectorAll('.faq-question').forEach((button) => button.addEventListener('click', () => button.closest('.faq-item')?.classList.toggle('open')));
+
+  const nav = document.querySelector('.nav');
+  const toggle = document.querySelector('.mobile-toggle');
+  const closeMenu = () => {
+    nav?.classList.remove('open');
+    document.body.classList.remove('nav-open');
+    toggle?.setAttribute('aria-expanded', 'false');
+  };
+
+  if (toggle && nav) {
+    if (!nav.id) nav.id = 'site-navigation';
+    toggle.type = 'button';
+    toggle.setAttribute('aria-controls', nav.id);
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', toggle.getAttribute('aria-label') || 'Menu');
+    toggle.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('open');
+      document.body.classList.toggle('nav-open', isOpen);
+      toggle.setAttribute('aria-expanded', String(isOpen));
+    });
+    nav.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+  }
+
+  document.querySelectorAll('.dropdown').forEach((dropdown, index) => {
+    const trigger = dropdown.querySelector('.drop-trigger');
+    const menu = dropdown.querySelector('.drop-menu');
+    if (!trigger || !menu) return;
+    const menuId = menu.id || `services-menu-${index + 1}`;
+    menu.id = menuId;
+    trigger.type = 'button';
+    trigger.setAttribute('aria-haspopup', 'true');
+    trigger.setAttribute('aria-controls', menuId);
+    trigger.setAttribute('aria-expanded', 'false');
+    const setOpen = (open) => {
+      dropdown.classList.toggle('open', open);
+      trigger.setAttribute('aria-expanded', String(open));
+    };
+    trigger.addEventListener('click', (event) => {
+      event.preventDefault();
+      setOpen(!dropdown.classList.contains('open'));
+    });
+    dropdown.addEventListener('pointerleave', () => setOpen(false));
+    menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
+  });
+
+  document.querySelectorAll('.faq-item').forEach((item, index) => {
+    const button = item.querySelector('.faq-question');
+    const answer = item.querySelector('.faq-answer');
+    if (!button || !answer) return;
+    const answerId = answer.id || `faq-answer-${index + 1}`;
+    answer.id = answerId;
+    button.type = 'button';
+    button.setAttribute('aria-controls', answerId);
+    button.setAttribute('aria-expanded', String(item.classList.contains('open')));
+    button.addEventListener('click', () => {
+      const isOpen = item.classList.toggle('open');
+      button.setAttribute('aria-expanded', String(isOpen));
+    });
+  });
+
+  document.querySelectorAll('.search').forEach((button) => {
+    button.type = 'button';
+    button.setAttribute('aria-label', button.getAttribute('aria-label') || 'Search site');
+    button.addEventListener('click', () => {
+      const query = window.prompt('Search this site');
+      if (!query) return;
+      const value = query.trim().toLowerCase();
+      if (!value) return;
+      const pages = [
+        { href: 'index.html', text: 'main about services faq contact siding installation repair vinyl fiber cement board batten exterior weather' },
+        { href: 'installation.html', text: 'siding installation facade zoning profile scale trim composer material vinyl fiber cement engineered wood' },
+        { href: 'repair.html', text: 'siding repair damage exterior facade' },
+        { href: 'privacy.html', text: 'privacy policy personal information contact form' },
+        { href: 'terms.html', text: 'terms of use legal informational content' },
+        { href: 'cookies.html', text: 'cookies notice browser storage tracking' }
+      ];
+      const result = pages.find((page) => page.text.includes(value));
+      if (result) {
+        window.location.href = result.href;
+      } else {
+        window.alert('No matching page found.');
+      }
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.dropdown')) {
+      document.querySelectorAll('.dropdown.open').forEach((dropdown) => {
+        dropdown.classList.remove('open');
+        dropdown.querySelector('.drop-trigger')?.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    closeMenu();
+    document.querySelectorAll('.dropdown.open').forEach((dropdown) => {
+      dropdown.classList.remove('open');
+      dropdown.querySelector('.drop-trigger')?.setAttribute('aria-expanded', 'false');
+    });
+  });
 
   if (window.AOS) {
     document.querySelectorAll('.page-intro, .faq-title, .services-head > div:first-child').forEach((el) => el.setAttribute('data-aos', 'fade-up'));
-    window.AOS.init({ duration: 560, once: true, offset: 80, easing: 'ease-out-cubic', disable: 'mobile' });
+    if (document.querySelector('[data-aos]')) {
+      window.AOS.init({ duration: 560, once: true, offset: 80, easing: 'ease-out-cubic', disable: 'mobile' });
+    }
   }
 }());
