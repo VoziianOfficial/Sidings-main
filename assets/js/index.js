@@ -96,22 +96,4 @@
     }
   }
 
-  const form = document.querySelector('.contact-form');
-  form?.querySelectorAll('input, textarea').forEach((field) => {
-    if (!field.getAttribute('aria-label') && field.getAttribute('placeholder')) {
-      field.setAttribute('aria-label', field.getAttribute('placeholder'));
-    }
-  });
-  form?.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const result = form.querySelector('.form-result');
-    try {
-      const response = await fetch('send.php', { method: 'POST', body: new FormData(form) });
-      const data = await response.json();
-      if (result) result.textContent = data.success ? 'Message sent successfully.' : (data.message || 'Unable to send your message.');
-      if (data.success) form.reset();
-    } catch {
-      if (result) result.textContent = 'Unable to send your message.';
-    }
-  });
 }());

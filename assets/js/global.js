@@ -36,7 +36,7 @@
       return;
     }
     el.textContent = email;
-    el.href = `mailto:${email}`;
+    el.href = `mailto:${email.replace(/[\r\n]/g, '')}`;
   });
   if (disclaimer) {
     document.querySelectorAll('[data-disclaimer]').forEach((el) => { el.textContent = disclaimer; });
@@ -80,12 +80,18 @@
     const setOpen = (open) => {
       dropdown.classList.toggle('open', open);
       trigger.setAttribute('aria-expanded', String(open));
+      menu.setAttribute('aria-hidden', String(!open));
     };
+    menu.setAttribute('aria-hidden', 'true');
+    dropdown.addEventListener('pointerenter', () => setOpen(true));
     trigger.addEventListener('click', (event) => {
       event.preventDefault();
       setOpen(!dropdown.classList.contains('open'));
     });
     dropdown.addEventListener('pointerleave', () => setOpen(false));
+    dropdown.addEventListener('focusout', () => window.setTimeout(() => {
+      if (!dropdown.contains(document.activeElement)) setOpen(false);
+    }, 0));
     menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
   });
 
@@ -98,9 +104,12 @@
     button.type = 'button';
     button.setAttribute('aria-controls', answerId);
     button.setAttribute('aria-expanded', String(item.classList.contains('open')));
+    answer.setAttribute('aria-hidden', String(!item.classList.contains('open')));
+    button.querySelector('span')?.setAttribute('aria-hidden', 'true');
     button.addEventListener('click', () => {
       const isOpen = item.classList.toggle('open');
       button.setAttribute('aria-expanded', String(isOpen));
+      answer.setAttribute('aria-hidden', String(!isOpen));
     });
   });
 
@@ -136,6 +145,62 @@
         dropdown.querySelector('.drop-trigger')?.setAttribute('aria-expanded', 'false');
       });
     }
+  });
+
+  document.querySelectorAll('form').forEach((form) => {
+    const submit = form.querySelector('button[type="submit"], input[type="submit"]');
+    const result = form.querySelector('.form-result');
+    let sending = false;
+
+    form.querySelectorAll('input, textarea, select').forEach((field) => {
+      if (!field.getAttribute('aria-label') && field.getAttribute('placeholder')) {
+        field.setAttribute('aria-label', field.getAttribute('placeholder'));
+      }
+      if (field.name === 'email' && field instanceof HTMLInputElement) {
+        field.type = 'email';
+      }
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (sending) return;
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      sending = true;
+      if (submit) submit.disabled = true;
+      if (result) result.textContent = '';
+
+      try {
+        const response = await fetch(form.action || 'send.php', {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' }
+        });
+        const data = await response.json().catch(() => ({}));
+        if (response.ok && data.success) {
+          if (result) result.textContent = 'Successfully sent';
+          form.reset();
+        } else if (result) {
+          result.textContent = data.message || 'Unable to send your message. Please try again.';
+        }
+      } catch {
+        if (result) result.textContent = 'Unable to send your message. Please try again.';
+      } finally {
+        sending = false;
+        if (submit) submit.disabled = false;
+      }
+    });
+  });
+
+  document.querySelectorAll('.expand-card, .process-stage, .band, .rail').forEach((element) => {
+    if (!element.hasAttribute('tabindex')) element.setAttribute('tabindex', '0');
+  });
+
+  document.querySelectorAll('button:not([type])').forEach((button) => {
+    button.type = 'button';
   });
 
   document.addEventListener('keydown', (event) => {
