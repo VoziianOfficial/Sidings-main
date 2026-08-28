@@ -1,5 +1,8 @@
 /* Shared configuration, navigation and small non-conflicting reveal effects. */
 (function () {
+  if (window.__SIDINGS_GLOBAL_READY__) return;
+  window.__SIDINGS_GLOBAL_READY__ = true;
+
   const config = window.SIDINGS_CONFIG;
   if (!config) return;
 

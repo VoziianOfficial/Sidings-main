@@ -1,5 +1,8 @@
 /* Installation and repair controls. Every interaction changes the illustrated structure. */
 (function () {
+  if (window.__SIDINGS_SERVICE_READY__) return;
+  window.__SIDINGS_SERVICE_READY__ = true;
+
   const setActive = (selector, active) => document.querySelectorAll(selector).forEach((item) => {
     const isActive = item === active;
     item.classList.toggle('active', isActive);
@@ -16,10 +19,10 @@
   document.querySelectorAll('[data-align]').forEach((button) => button.addEventListener('click', () => { const machine = document.querySelector('.align-machine'); machine?.classList.add('aligned'); window.setTimeout(() => machine?.classList.remove('aligned'), 1800); }));
   document.querySelectorAll('[data-style]').forEach((button) => button.addEventListener('click', () => { setActive('[data-style]', button); const morph = document.querySelector('.style-morph'); if (morph) morph.dataset.style = button.dataset.style; }));
   document.querySelectorAll('[data-symptom]').forEach((button) => button.addEventListener('click', () => { const network = document.querySelector('.network'); if (network) network.dataset.symptom = button.dataset.symptom; setActive('[data-symptom]', button); }));
-  document.querySelectorAll('[data-threshold]').forEach((button) => button.addEventListener('click', () => { const value = { single: ['10%', '8%'], cluster: ['30%', '32%'], section: ['49%', '56%'], wide: ['72%', '78%'] }[button.dataset.threshold]; const threshold = document.querySelector('.threshold'); threshold?.style.setProperty('--damage-size', value[0]); threshold?.style.setProperty('--meter', value[1]); }));
+  document.querySelectorAll('[data-threshold]').forEach((button) => button.addEventListener('click', () => { const value = { single: ['10%', '8%'], cluster: ['30%', '32%'], section: ['49%', '56%'], wide: ['72%', '78%'] }[button.dataset.threshold]; const threshold = document.querySelector('.threshold'); if (!threshold || !value) return; threshold.style.setProperty('--damage-size', value[0]); threshold.style.setProperty('--meter', value[1]); }));
   document.querySelectorAll('[data-moisture]').forEach((button) => button.addEventListener('click', () => { document.querySelector('.moisture')?.classList.toggle('active'); }));
   document.querySelectorAll('[data-match]').forEach((button) => button.addEventListener('click', () => { const lab = document.querySelector('.match-lab'); if (!lab) return; const count = Number(lab.dataset.count || 0) + 1; lab.dataset.count = String(count); if (count >= 3) lab.classList.add('matched'); }));
-  document.querySelectorAll('[data-warp]').forEach((button) => button.addEventListener('click', () => { document.querySelector('.warp')?.style.setProperty('--warp', { low: '3deg', medium: '8deg', high: '14deg' }[button.dataset.warp]); }));
+  document.querySelectorAll('[data-warp]').forEach((button) => button.addEventListener('click', () => { const value = { low: '3deg', medium: '8deg', high: '14deg' }[button.dataset.warp]; if (!value) return; document.querySelector('.warp')?.style.setProperty('--warp', value); }));
   document.querySelector('.restore-warp')?.addEventListener('click', () => document.querySelector('.warp')?.classList.add('restore'));
   const microscope = document.querySelector('.micro-surface');
   microscope?.addEventListener('pointermove', (event) => { const rect = microscope.getBoundingClientRect(); const lens = microscope.querySelector('.lens'); if (!lens) return; const x = event.clientX - rect.left; const y = event.clientY - rect.top; lens.style.left = `${x}px`; lens.style.top = `${y}px`; lens.textContent = x < rect.width * 0.25 ? 'Lifted Edge' : x < rect.width * 0.5 ? 'Hairline Crack' : x < rect.width * 0.75 ? 'Separation' : 'Puncture'; });
