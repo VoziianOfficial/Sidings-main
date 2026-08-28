@@ -1,0 +1,4 @@
+/* legal */
+.legal{padding:140px 0 100px}.legal .content{max-width:760px}.legal h1{margin-bottom:35px}.legal h2{font:700 28px var(--serif);letter-spacing:-.05em;margin-top:34px}.legal p{line-height:1.8}
+
+@media(max-width:850px){.legal{padding-top:110px}}

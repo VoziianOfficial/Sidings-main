@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" aria-label="Sidings house mark">
+  <path fill="#B4DBF1" d="M13 45 50 14l37 31v42H13z"/>
+  <path fill="#fff" d="M20 47 50 22l30 25v33H20z"/>
+  <path fill="#B4DBF1" d="M69 19h9v16h-9z"/>
+  <path stroke="#BCE290" stroke-width="5" d="M27 47h46M27 57h46M27 67h46"/>
+  <path fill="#F3D3D7" d="M44 70h12v10H44z"/>
+</svg>
