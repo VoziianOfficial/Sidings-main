@@ -2,3 +2,5 @@
 .legal{padding:140px 0 100px}.legal .content{max-width:760px}.legal h1{margin-bottom:35px}.legal h2{font:700 28px var(--serif);letter-spacing:-.05em;margin-top:34px}.legal p{line-height:1.8}
 
 @media(max-width:850px){.legal{padding-top:110px}}
+
+.legal,.legal .content{min-width:0;max-width:100%}.legal p,.legal a,.legal h1,.legal h2{overflow-wrap:anywhere}@media(max-width:1024px){.legal{text-align:center}.legal .content{margin-inline:auto}.legal h1,.legal h2{text-align:center}}@media(max-width:480px){.legal{padding:104px 0 74px}.legal h2{font-size:24px}}

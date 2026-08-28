@@ -76,9 +76,26 @@
 
   const nav = document.querySelector('.nav');
   const toggle = document.querySelector('.mobile-toggle');
+  let lockedScrollY = 0;
+  const lockPageScroll = () => {
+    lockedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.classList.add('nav-open');
+    document.body.classList.add('nav-open');
+    document.body.style.top = `-${lockedScrollY}px`;
+    document.body.style.paddingRight = scrollbarWidth > 0 ? `${scrollbarWidth}px` : '';
+  };
+  const unlockPageScroll = () => {
+    if (!document.body.classList.contains('nav-open')) return;
+    document.documentElement.classList.remove('nav-open');
+    document.body.classList.remove('nav-open');
+    document.body.style.top = '';
+    document.body.style.paddingRight = '';
+    window.scrollTo(0, lockedScrollY);
+  };
   const closeMenu = () => {
     nav?.classList.remove('open');
-    document.body.classList.remove('nav-open');
+    unlockPageScroll();
     toggle?.setAttribute('aria-expanded', 'false');
   };
 
@@ -90,7 +107,8 @@
     toggle.setAttribute('aria-label', toggle.getAttribute('aria-label') || 'Menu');
     toggle.addEventListener('click', () => {
       const isOpen = nav.classList.toggle('open');
-      document.body.classList.toggle('nav-open', isOpen);
+      if (isOpen) lockPageScroll();
+      else unlockPageScroll();
       toggle.setAttribute('aria-expanded', String(isOpen));
     });
     nav.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
@@ -112,12 +130,13 @@
       menu.setAttribute('aria-hidden', String(!open));
     };
     menu.setAttribute('aria-hidden', 'true');
-    dropdown.addEventListener('pointerenter', () => setOpen(true));
+    const supportsHover = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    dropdown.addEventListener('pointerenter', () => { if (supportsHover() && !nav?.classList.contains('open')) setOpen(true); });
     trigger.addEventListener('click', (event) => {
       event.preventDefault();
       setOpen(!dropdown.classList.contains('open'));
     });
-    dropdown.addEventListener('pointerleave', () => setOpen(false));
+    dropdown.addEventListener('pointerleave', () => { if (supportsHover() && !nav?.classList.contains('open')) setOpen(false); });
     dropdown.addEventListener('focusout', () => window.setTimeout(() => {
       if (!dropdown.contains(document.activeElement)) setOpen(false);
     }, 0));
