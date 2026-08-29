@@ -8,7 +8,7 @@
     item.classList.toggle('active', isActive);
     if (item.matches('button')) item.setAttribute('aria-pressed', String(isActive));
   });
-  document.querySelectorAll('[data-scale]').forEach((button) => { button.type = 'button'; button.setAttribute('aria-pressed', String(button.classList.contains('active'))); button.addEventListener('click', () => { setActive('[data-scale]', button); const lab = document.querySelector('.premium-scale'); if (lab) lab.dataset.profile = button.dataset.scale; }); });
+  document.querySelectorAll('[data-scale]').forEach((button) => { button.type = 'button'; button.setAttribute('aria-pressed', String(button.classList.contains('active'))); button.addEventListener('click', () => { const lab = button.closest('.premium-scale'); const group = button.closest('.material-controls'); if (group) group.querySelectorAll('[data-scale]').forEach((item) => { const isActive = item === button; item.classList.toggle('active', isActive); item.setAttribute('aria-pressed', String(isActive)); }); else setActive('[data-scale]', button); if (lab) lab.dataset.profile = button.dataset.scale; }); });
   document.querySelectorAll('[data-trim]').forEach((button) => { button.type = 'button'; button.setAttribute('aria-pressed', String(button.classList.contains('active'))); button.addEventListener('click', () => { setActive('[data-trim]', button); const composer = document.querySelector('.premium-trim'); if (composer) composer.dataset.trimStyle = button.dataset.trim; }); });
   const zoning = document.querySelector('.premium-zoning');
   const zoneName = document.querySelector('[data-zone-name]');
