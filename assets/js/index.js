@@ -234,6 +234,32 @@
     }
   }
 
+  const faqPhoto = document.querySelector('.faq-photo');
+  const faqSection = document.querySelector('.faq-section');
+  if (faqPhoto && faqSection && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const faqDesktopQuery = window.matchMedia('(min-width: 851px)');
+    let faqTicking = false;
+    const syncFaqParallax = () => {
+      faqTicking = false;
+      if (!faqDesktopQuery.matches) {
+        faqPhoto.style.transform = '';
+        return;
+      }
+      const rect = faqSection.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const progress = Math.min(1, Math.max(0, (vh - rect.top) / (vh + rect.height)));
+      const offset = (progress - 0.5) * 70;
+      faqPhoto.style.transform = `translate3d(0,${offset.toFixed(1)}px,0)`;
+    };
+    window.addEventListener('scroll', () => {
+      if (faqTicking) return;
+      faqTicking = true;
+      window.requestAnimationFrame(syncFaqParallax);
+    }, { passive: true });
+    window.addEventListener('resize', syncFaqParallax, { passive: true });
+    syncFaqParallax();
+  }
+
   const craftStats = document.querySelector('.craft-stats');
   if (craftStats) {
     const counters = [...craftStats.querySelectorAll('.craft-stat strong')].map((counter) => {
@@ -282,6 +308,57 @@
       statsObserver.observe(craftStats);
     } else {
       runCounters();
+    }
+  }
+
+  const rippleStats = document.querySelector('.ripple-stats');
+  if (rippleStats) {
+    const rippleCounters = [...rippleStats.querySelectorAll('.ripple-stat strong')].map((counter) => {
+      const original = counter.textContent.trim();
+      const value = Number(original.replace(/[^\d]/g, ''));
+      const prefix = original.match(/^\D+/)?.[0] || '';
+      const suffix = original.match(/\D+$/)?.[0] || '';
+      counter.dataset.countTo = String(value);
+      counter.dataset.prefix = prefix;
+      counter.dataset.suffix = suffix;
+      counter.textContent = `${prefix}0${suffix}`;
+      return counter;
+    }).filter((counter) => Number.isFinite(Number(counter.dataset.countTo)));
+
+    const formatRippleCounter = (counter, value) => {
+      counter.textContent = `${counter.dataset.prefix}${Math.round(value).toLocaleString('en-US')}${counter.dataset.suffix}`;
+    };
+    const runRippleCounters = () => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      rippleCounters.forEach((counter) => {
+        const target = Number(counter.dataset.countTo);
+        if (reduceMotion) {
+          formatRippleCounter(counter, target);
+          return;
+        }
+        const duration = 1300;
+        const start = performance.now();
+        const tick = (now) => {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          formatRippleCounter(counter, target * eased);
+          if (progress < 1) window.requestAnimationFrame(tick);
+        };
+        window.requestAnimationFrame(tick);
+      });
+    };
+
+    if ('IntersectionObserver' in window) {
+      const rippleObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          runRippleCounters();
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.35 });
+      rippleObserver.observe(rippleStats);
+    } else {
+      runRippleCounters();
     }
   }
 

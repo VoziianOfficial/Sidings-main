@@ -205,18 +205,21 @@
   document.querySelectorAll('.faq-item').forEach((item, index) => {
     const button = item.querySelector('.faq-question');
     const answer = item.querySelector('.faq-answer');
+    const glyph = button?.querySelector('span');
     if (!button || !answer) return;
     const answerId = answer.id || `faq-answer-${index + 1}`;
     answer.id = answerId;
     button.type = 'button';
     button.setAttribute('aria-controls', answerId);
-    button.setAttribute('aria-expanded', String(item.classList.contains('open')));
-    answer.setAttribute('aria-hidden', String(!item.classList.contains('open')));
-    button.querySelector('span')?.setAttribute('aria-hidden', 'true');
-    button.addEventListener('click', () => {
-      const isOpen = item.classList.toggle('open');
+    glyph?.setAttribute('aria-hidden', 'true');
+    const syncOpenState = (isOpen) => {
       button.setAttribute('aria-expanded', String(isOpen));
       answer.setAttribute('aria-hidden', String(!isOpen));
+      if (glyph) glyph.textContent = isOpen ? '−' : '+';
+    };
+    syncOpenState(item.classList.contains('open'));
+    button.addEventListener('click', () => {
+      syncOpenState(item.classList.toggle('open'));
     });
   });
 
