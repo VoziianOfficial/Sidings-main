@@ -43,7 +43,7 @@
 /* Installation rail: full-card photo reveal */
 .installation-rail-section .rail{min-height:clamp(320px,34vw,500px);padding:0;background:var(--ink);border:1px solid rgba(16,17,16,.12);box-shadow:0 24px 64px rgba(16,17,16,.12);cursor:pointer}
 .installation-rail-section .rail:before{content:'';position:absolute;inset:0;z-index:0;background:repeating-linear-gradient(0deg,rgba(180,219,241,.24) 0 26px,rgba(255,255,255,.08) 27px 30px);transition:opacity .35s ease}
-.installation-rail-section .install-rail{position:absolute;inset:0;z-index:1;width:100%;height:100%;border:0;background:url("../images/service-insights/installation-panel-install.webp") center/cover no-repeat;transform:translate3d(-101%,0,0);transition:transform 1.05s cubic-bezier(.22,1,.36,1);will-change:transform}
+.installation-rail-section .install-rail{position:absolute;inset:0;z-index:1;width:100%;height:100%;border:0;background:url("../images/service-insights/installation-rail-reveal.webp") center/cover no-repeat;transform:translate3d(-101%,0,0);transition:transform 1.05s cubic-bezier(.22,1,.36,1);will-change:transform}
 .installation-rail-section .install-rail:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(16,17,16,.1),rgba(16,17,16,.02) 48%,rgba(16,17,16,.18));pointer-events:none}
 .installation-rail-section .rail:hover .install-rail,.installation-rail-section .rail:focus-visible .install-rail{width:100%;transform:translate3d(0,0,0)}
 .installation-rail-section .rail:hover:before,.installation-rail-section .rail:focus-visible:before{opacity:0}
