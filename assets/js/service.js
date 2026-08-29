@@ -212,4 +212,87 @@
       highlightSplits.forEach((split) => highlightObserver.observe(split));
     }
   }
+
+  const composeSwipers = document.querySelectorAll('.compose-swiper');
+  if (composeSwipers.length && window.Swiper) {
+    composeSwipers.forEach((swiperEl) => {
+      if (swiperEl.swiper) return;
+      const visual = swiperEl.closest('.compose-visual');
+      const fill = visual?.querySelector('.compose-progress-fill');
+      const currentEl = visual?.querySelector('.compose-count-current');
+      const totalEl = visual?.querySelector('.compose-count-total');
+      const slideCount = swiperEl.querySelectorAll('.swiper-slide').length;
+      if (!slideCount) return;
+      if (totalEl) totalEl.textContent = String(slideCount).padStart(2, '0');
+      const updateProgress = (swiper) => {
+        const index = swiper.realIndex || 0;
+        if (fill) {
+          fill.style.width = `${100 / slideCount}%`;
+          fill.style.transform = `translateX(${index * 100}%)`;
+        }
+        if (currentEl) currentEl.textContent = String(index + 1).padStart(2, '0');
+      };
+      new window.Swiper(swiperEl, {
+        loop: true,
+        speed: 620,
+        grabCursor: true,
+        navigation: {
+          nextEl: visual?.querySelector('.compose-next') || null,
+          prevEl: visual?.querySelector('.compose-prev') || null,
+        },
+        on: { init: updateProgress, slideChange: updateProgress },
+      });
+    });
+  }
+
+  const initComposeTabs = (section) => {
+    const tabs = [...section.querySelectorAll('.compose-tab')];
+    const panels = [...section.querySelectorAll('.compose-panel')];
+    const wrap = section.querySelector('.compose-panels');
+    if (!tabs.length || !panels.length || !wrap) return;
+    let locked = false;
+    const activate = (key, focusTab = false) => {
+      if (locked) return;
+      const current = panels.find((panel) => panel.classList.contains('is-active'));
+      const next = panels.find((panel) => panel.dataset.tabPanel === key);
+      if (!next || next === current) return;
+      locked = true;
+      tabs.forEach((tab) => {
+        const isActive = tab.dataset.tabTarget === key;
+        tab.classList.toggle('is-active', isActive);
+        tab.setAttribute('aria-selected', String(isActive));
+        tab.tabIndex = isActive ? 0 : -1;
+      });
+      wrap.style.height = `${wrap.getBoundingClientRect().height}px`;
+      if (current) {
+        current.classList.add('is-leaving');
+        current.classList.remove('is-active');
+      }
+      window.setTimeout(() => {
+        if (current) current.classList.remove('is-leaving');
+        next.classList.add('is-active', 'is-entering');
+        window.requestAnimationFrame(() => {
+          wrap.style.height = `${next.scrollHeight}px`;
+          window.requestAnimationFrame(() => next.classList.remove('is-entering'));
+        });
+        window.setTimeout(() => {
+          wrap.style.height = '';
+          locked = false;
+        }, 640);
+      }, 300);
+      if (focusTab) tabs.find((tab) => tab.dataset.tabTarget === key)?.focus();
+    };
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => activate(tab.dataset.tabTarget));
+      tab.addEventListener('keydown', (event) => {
+        const keys = ['ArrowRight', 'ArrowLeft', 'Home', 'End'];
+        if (!keys.includes(event.key)) return;
+        event.preventDefault();
+        const lastIndex = tabs.length - 1;
+        const nextIndex = event.key === 'Home' ? 0 : event.key === 'End' ? lastIndex : event.key === 'ArrowRight' ? Math.min(index + 1, lastIndex) : Math.max(index - 1, 0);
+        activate(tabs[nextIndex].dataset.tabTarget, true);
+      });
+    });
+  };
+  document.querySelectorAll('.compose-section').forEach(initComposeTabs);
 }());

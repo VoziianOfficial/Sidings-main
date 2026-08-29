@@ -728,6 +728,46 @@
     if (!element.hasAttribute('tabindex')) element.setAttribute('tabindex', '0');
   });
 
+  const legalPage = document.querySelector('[data-legal-page]');
+  if (legalPage) {
+    const sectionList = [...legalPage.querySelectorAll('.legal-section[id]')];
+    const navLinks = [...legalPage.querySelectorAll('.legal-nav a[href^="#"]')];
+
+    navLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        const mobileNav = link.closest('.legal-mobile-nav');
+        if (mobileNav instanceof HTMLDetailsElement) {
+          window.setTimeout(() => { mobileNav.open = false; }, 180);
+        }
+      });
+    });
+
+    const setActiveLegalSection = (id) => {
+      navLinks.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === `#${id}`));
+    };
+
+    if (sectionList.length) setActiveLegalSection(sectionList[0].id);
+    if ('IntersectionObserver' in window && sectionList.length) {
+      const visibleSections = new Map();
+      const legalObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) visibleSections.set(entry.target.id, entry.boundingClientRect.top);
+          else visibleSections.delete(entry.target.id);
+        });
+        if (!visibleSections.size) return;
+        const active = [...visibleSections].sort((a, b) => Math.abs(a[1]) - Math.abs(b[1]))[0][0];
+        setActiveLegalSection(active);
+      }, { rootMargin: '-120px 0px -62% 0px', threshold: [0, .15, .4] });
+      sectionList.forEach((section) => legalObserver.observe(section));
+    } else {
+      window.addEventListener('scroll', () => {
+        const offset = window.matchMedia('(max-width: 1024px)').matches ? 104 : 138;
+        const active = [...sectionList].reverse().find((section) => section.getBoundingClientRect().top <= offset);
+        if (active) setActiveLegalSection(active.id);
+      }, { passive: true });
+    }
+  }
+
   document.querySelectorAll('button:not([type])').forEach((button) => {
     button.type = 'button';
   });

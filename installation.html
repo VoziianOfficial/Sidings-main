@@ -10,7 +10,8 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=DM+Mono&family=Manrope:wght@500;700;800&family=Syne:wght@600;700;800&display=swap">
     <link rel="stylesheet" href="assets/css/global.css">
-    <link rel="stylesheet" href="assets/css/service.css?v=highlight-accordion"><noscript>
+    <link rel="stylesheet" href="assets/vendor/swiper-bundle.min.css">
+    <link rel="stylesheet" href="assets/css/service.css?v=compose-swiper-tabs"><noscript>
         <style>
             .zoning-model {
                 background-image: url("assets/images/installation/facade-zoning-installation-v2.webp")
@@ -23,7 +24,8 @@
     </noscript>
     <script defer src="config/config.js"></script>
     <script defer src="assets/js/global.js"></script>
-    <script defer src="assets/js/service.js?v=highlight-accordion"></script>
+    <script defer src="assets/vendor/swiper-bundle.min.js"></script>
+    <script defer src="assets/js/service.js?v=compose-swiper-tabs"></script>
     <title>Installation</title>
 </head>
 
@@ -49,6 +51,236 @@
             <div class="shutters"><i class="shutter"></i><i class="shutter"></i><i class="shutter"></i><i
                     class="shutter"></i><i class="shutter"></i><i class="shutter"></i></div>
             <h1>Siding<br>Installation</h1>
+        </section>
+        <section class="service-section compose-section" id="installation-compose" aria-label="How we approach every siding installation">
+            <div class="container">
+                <div class="compose-parallax">
+                    <img data-parallax-image src="assets/images/service-insights/installation-rail-reveal.webp"
+                        alt="Wide view of a continuous new siding installation along a modern home exterior"
+                        loading="lazy" width="1600" height="700">
+                </div>
+                <div class="compose-grid">
+                    <div class="compose-visual">
+                        <div class="compose-swiper swiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide"><img
+                                        src="assets/images/service-gallery/installation-installation.webp"
+                                        alt="Installers fitting new siding panels on a clean home exterior"
+                                        loading="lazy" width="990" height="793"></div>
+                                <div class="swiper-slide"><img src="assets/images/installation/facade-zoning.webp"
+                                        alt="Full elevation of a home showing siding panel and facade detail"
+                                        loading="lazy" width="1400" height="934"></div>
+                                <div class="swiper-slide"><img src="assets/images/installation/trim-composer.webp"
+                                        alt="Corner and trim detail on a newly installed siding exterior"
+                                        loading="lazy" width="1200" height="800"></div>
+                                <div class="swiper-slide"><img src="assets/images/installation/profile-scale.webp"
+                                        alt="Close view of siding panel profile and coursing" loading="lazy"
+                                        width="1200" height="800"></div>
+                            </div>
+                        </div>
+                        <div class="compose-nav"><button class="compose-arrow compose-prev" type="button"
+                                aria-label="Previous photo"><svg viewBox="0 0 24 24">
+                                    <path d="m15 18-6-6 6-6" />
+                                </svg></button>
+                            <div class="compose-progress"><span class="compose-progress-fill"></span></div><span
+                                class="compose-count"><b class="compose-count-current">01</b> / <span
+                                    class="compose-count-total">04</span></span><button
+                                class="compose-arrow compose-next" type="button" aria-label="Next photo"><svg
+                                    viewBox="0 0 24 24">
+                                    <path d="m9 18 6-6-6-6" />
+                                </svg></button>
+                        </div>
+                    </div>
+                    <div class="compose-content">
+                        <div class="compose-tabs" role="tablist" aria-label="Installation service details">
+                            <button class="compose-tab is-active" type="button" role="tab"
+                                id="installation-tab-approach" aria-controls="installation-panel-approach"
+                                aria-selected="true" data-tab-target="approach">Approach</button>
+                            <button class="compose-tab" type="button" role="tab" id="installation-tab-process"
+                                aria-controls="installation-panel-process" aria-selected="false" tabindex="-1"
+                                data-tab-target="process">Process</button>
+                            <button class="compose-tab" type="button" role="tab" id="installation-tab-quality"
+                                aria-controls="installation-panel-quality" aria-selected="false" tabindex="-1"
+                                data-tab-target="quality">Quality</button>
+                        </div>
+                        <div class="compose-panels">
+                            <div class="compose-panel is-active" data-tab-panel="approach" role="tabpanel"
+                                id="installation-panel-approach" aria-labelledby="installation-tab-approach">
+                                <span class="compose-label">Installation · Approach</span>
+                                <h2>A considered approach to every elevation</h2>
+                                <p class="compose-text">Before a single panel goes up, we read the elevation —
+                                    window lines, corners, drainage paths — so the layout is planned, not
+                                    improvised.</p>
+                                <p class="compose-note">Every project starts with a measured site walk and a
+                                    written material plan.</p>
+                                <div class="detail-accordion" data-detail-accordion>
+                                    <article class="detail-accordion-item is-open">
+                                        <button class="detail-trigger" id="cmp-i-appr-t1"
+                                            aria-controls="cmp-i-appr-p1"><span>How do we prepare the
+                                                exterior?</span><span class="detail-icon" aria-hidden="true"><svg
+                                                    viewBox="0 0 24 24">
+                                                    <path d="m6 9 6 6 6-6" />
+                                                </svg></span></button>
+                                        <div class="detail-panel" id="cmp-i-appr-p1" role="region"
+                                            aria-labelledby="cmp-i-appr-t1">
+                                            <div class="detail-panel-inner">
+                                                <p>We clear the wall line, check the sheathing and house wrap, and
+                                                    confirm flashing at every opening before layout begins.</p>
+                                            </div>
+                                        </div>
+                                    </article>
+                                    <article class="detail-accordion-item">
+                                        <button class="detail-trigger" id="cmp-i-appr-t2"
+                                            aria-controls="cmp-i-appr-p2"><span>Which siding materials work
+                                                best?</span><span class="detail-icon" aria-hidden="true"><svg
+                                                    viewBox="0 0 24 24">
+                                                    <path d="m6 9 6 6 6-6" />
+                                                </svg></span></button>
+                                        <div class="detail-panel" id="cmp-i-appr-p2" role="region"
+                                            aria-labelledby="cmp-i-appr-t2">
+                                            <div class="detail-panel-inner">
+                                                <p>Vinyl, fiber cement and engineered wood each suit different
+                                                    climates and budgets — we match the profile to your home
+                                                    during the first walk-through.</p>
+                                            </div>
+                                        </div>
+                                    </article>
+                                    <article class="detail-accordion-item">
+                                        <button class="detail-trigger" id="cmp-i-appr-t3"
+                                            aria-controls="cmp-i-appr-p3"><span>How long does the service
+                                                take?</span><span class="detail-icon" aria-hidden="true"><svg
+                                                    viewBox="0 0 24 24">
+                                                    <path d="m6 9 6 6 6-6" />
+                                                </svg></span></button>
+                                        <div class="detail-panel" id="cmp-i-appr-p3" role="region"
+                                            aria-labelledby="cmp-i-appr-t3">
+                                            <div class="detail-panel-inner">
+                                                <p>Most single-family installations run one to two weeks
+                                                    depending on elevation size, material and weather.</p>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </div>
+                            <div class="compose-panel" data-tab-panel="process" role="tabpanel"
+                                id="installation-panel-process" aria-labelledby="installation-tab-process">
+                                <span class="compose-label">Installation · Process</span>
+                                <h2>Built course by course, not guessed at</h2>
+                                <p class="compose-text">Panels are aligned, dry-fit and fastened in sequence, so
+                                    reveals stay straight and seams stay tight across the whole wall.</p>
+                                <p class="compose-note">Starter strips, flashing and expansion gaps are set
+                                    before the first course is fastened.</p>
+                                <div class="detail-accordion" data-detail-accordion>
+                                    <article class="detail-accordion-item is-open">
+                                        <button class="detail-trigger" id="cmp-i-proc-t1"
+                                            aria-controls="cmp-i-proc-p1"><span>How are panels aligned and
+                                                fastened?</span><span class="detail-icon" aria-hidden="true"><svg
+                                                    viewBox="0 0 24 24">
+                                                    <path d="m6 9 6 6 6-6" />
+                                                </svg></span></button>
+                                        <div class="detail-panel" id="cmp-i-proc-p1" role="region"
+                                            aria-labelledby="cmp-i-proc-t1">
+                                            <div class="detail-panel-inner">
+                                                <p>Each course is leveled off a chalk line and fastened at
+                                                    manufacturer-specified points, leaving room for natural
+                                                    expansion.</p>
+                                            </div>
+                                        </div>
+                                    </article>
+                                    <article class="detail-accordion-item">
+                                        <button class="detail-trigger" id="cmp-i-proc-t2"
+                                            aria-controls="cmp-i-proc-p2"><span>What happens at corners and
+                                                openings?</span><span class="detail-icon" aria-hidden="true"><svg
+                                                    viewBox="0 0 24 24">
+                                                    <path d="m6 9 6 6 6-6" />
+                                                </svg></span></button>
+                                        <div class="detail-panel" id="cmp-i-proc-p2" role="region"
+                                            aria-labelledby="cmp-i-proc-t2">
+                                            <div class="detail-panel-inner">
+                                                <p>Corner posts and trim are set first, then panels are cut and
+                                                    fitted around windows and doors with protected, sealed edges.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </article>
+                                    <article class="detail-accordion-item">
+                                        <button class="detail-trigger" id="cmp-i-proc-t3"
+                                            aria-controls="cmp-i-proc-p3"><span>How is the exterior protected
+                                                during install?</span><span class="detail-icon"
+                                                aria-hidden="true"><svg viewBox="0 0 24 24">
+                                                    <path d="m6 9 6 6 6-6" />
+                                                </svg></span></button>
+                                        <div class="detail-panel" id="cmp-i-proc-p3" role="region"
+                                            aria-labelledby="cmp-i-proc-t3">
+                                            <div class="detail-panel-inner">
+                                                <p>House wrap, flashing and overlaps are detailed at every seam
+                                                    so the wall sheds water correctly from day one.</p>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </div>
+                            <div class="compose-panel" data-tab-panel="quality" role="tabpanel"
+                                id="installation-panel-quality" aria-labelledby="installation-tab-quality">
+                                <span class="compose-label">Installation · Quality</span>
+                                <h2>Quality that holds its line for years</h2>
+                                <p class="compose-text">Every installation is walked and checked against the
+                                    plan before we call it finished — not just glanced at from the curb.</p>
+                                <p class="compose-note">We leave a clear maintenance note with every completed
+                                    project.</p>
+                                <div class="detail-accordion" data-detail-accordion>
+                                    <article class="detail-accordion-item is-open">
+                                        <button class="detail-trigger" id="cmp-i-qual-t1"
+                                            aria-controls="cmp-i-qual-p1"><span>What quality checks happen before
+                                                handover?</span><span class="detail-icon" aria-hidden="true"><svg
+                                                    viewBox="0 0 24 24">
+                                                    <path d="m6 9 6 6 6-6" />
+                                                </svg></span></button>
+                                        <div class="detail-panel" id="cmp-i-qual-p1" role="region"
+                                            aria-labelledby="cmp-i-qual-t1">
+                                            <div class="detail-panel-inner">
+                                                <p>We check reveal alignment, fastening depth, trim gaps and
+                                                    flashing at every opening before signing off the job.</p>
+                                            </div>
+                                        </div>
+                                    </article>
+                                    <article class="detail-accordion-item">
+                                        <button class="detail-trigger" id="cmp-i-qual-t2"
+                                            aria-controls="cmp-i-qual-p2"><span>What warranty is
+                                                included?</span><span class="detail-icon" aria-hidden="true"><svg
+                                                    viewBox="0 0 24 24">
+                                                    <path d="m6 9 6 6 6-6" />
+                                                </svg></span></button>
+                                        <div class="detail-panel" id="cmp-i-qual-p2" role="region"
+                                            aria-labelledby="cmp-i-qual-t2">
+                                            <div class="detail-panel-inner">
+                                                <p>Workmanship warranties range from 2 to 10 years depending on
+                                                    the package, alongside the manufacturer's material warranty.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </article>
+                                    <article class="detail-accordion-item">
+                                        <button class="detail-trigger" id="cmp-i-qual-t3"
+                                            aria-controls="cmp-i-qual-p3"><span>How do you keep the site
+                                                clean?</span><span class="detail-icon" aria-hidden="true"><svg
+                                                    viewBox="0 0 24 24">
+                                                    <path d="m6 9 6 6 6-6" />
+                                                </svg></span></button>
+                                        <div class="detail-panel" id="cmp-i-qual-p3" role="region"
+                                            aria-labelledby="cmp-i-qual-t3">
+                                            <div class="detail-panel-inner">
+                                                <p>Offcuts and packaging are cleared daily, and the property is
+                                                    swept before the final walkthrough.</p>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
         <section class="service-section service-gallery-section white" aria-label="Installation craft highlights">
             <div class="container">
