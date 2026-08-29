@@ -482,7 +482,7 @@
           </button>
         </div>
         <nav class="mobile-menu-nav" aria-label="Mobile navigation">
-          <a class="mobile-menu-link" style="--item-index:0" href="index.html#main"><span>Main</span></a>
+          <a class="mobile-menu-link" style="--item-index:0" href="index.html"><span>Main</span></a>
           <a class="mobile-menu-link" style="--item-index:1" href="index.html#about"><span>About Us</span></a>
           <div class="mobile-services" style="--item-index:2">
             <button class="mobile-services-trigger" type="button" aria-expanded="false" aria-controls="mobile-services-panel">
