@@ -234,6 +234,22 @@
     }
   }
 
+  const mosaicTiles = document.querySelector('.mosaic-tiles');
+  if (mosaicTiles) {
+    if ('IntersectionObserver' in window) {
+      const mosaicObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          mosaicTiles.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.2 });
+      mosaicObserver.observe(mosaicTiles);
+    } else {
+      mosaicTiles.classList.add('is-visible');
+    }
+  }
+
   const faqPhoto = document.querySelector('.faq-photo');
   const faqSection = document.querySelector('.faq-section');
   if (faqPhoto && faqSection && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
