@@ -58,6 +58,67 @@
   };
   document.querySelectorAll('[data-service-accordion]').forEach(initServiceAccordion);
 
+  const parallaxImages = [...document.querySelectorAll('[data-parallax-image]')];
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (parallaxImages.length) {
+    const activeImages = new Set();
+    let ticking = false;
+    const updateParallax = () => {
+      ticking = false;
+      if (reduceMotion.matches) return;
+      const viewport = window.innerHeight || document.documentElement.clientHeight;
+      const strength = window.innerWidth < 620 ? 12 : window.innerWidth < 1024 ? 18 : 34;
+      activeImages.forEach((image) => {
+        const frame = image.parentElement;
+        if (!frame) return;
+        const rect = frame.getBoundingClientRect();
+        const progress = ((rect.top + rect.height / 2) - viewport / 2) / (viewport + rect.height);
+        const offset = Math.max(-1, Math.min(1, progress)) * -strength;
+        image.style.transform = `translate3d(0, ${offset.toFixed(2)}px, 0) scale(1.04)`;
+      });
+    };
+    const requestParallax = () => {
+      if (ticking || reduceMotion.matches) return;
+      ticking = true;
+      window.requestAnimationFrame(updateParallax);
+    };
+    if (!('IntersectionObserver' in window)) {
+      parallaxImages.forEach((image) => activeImages.add(image));
+      requestParallax();
+    } else {
+      const parallaxObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) activeImages.add(entry.target);
+          else activeImages.delete(entry.target);
+        });
+        requestParallax();
+      }, { rootMargin: '18% 0px' });
+      parallaxImages.forEach((image) => parallaxObserver.observe(image));
+    }
+    window.addEventListener('scroll', requestParallax, { passive: true });
+    window.addEventListener('resize', requestParallax);
+    reduceMotion.addEventListener?.('change', () => {
+      if (reduceMotion.matches) parallaxImages.forEach((image) => { image.style.transform = ''; });
+      else requestParallax();
+    });
+  }
+
+  const insightCards = document.querySelectorAll('.reveal-insight');
+  if (insightCards.length) {
+    if (!('IntersectionObserver' in window)) {
+      insightCards.forEach((card) => card.classList.add('in-view'));
+    } else {
+      const insightObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.18 });
+      insightCards.forEach((card) => insightObserver.observe(card));
+    }
+  }
+
   const galleries = document.querySelectorAll('.service-gallery');
   if (galleries.length) {
     if (!('IntersectionObserver' in window)) {
