@@ -16,6 +16,7 @@
     const transitionTimers = new Set();
     const stripDelay = 78;
     const stripDuration = 680;
+    const autoplayDelay = 5000;
 
     const currentLayer = document.createElement('div');
     const wipeLayer = document.createElement('div');
@@ -109,7 +110,7 @@
     };
     const scheduleAutoplay = () => {
       window.clearTimeout(autoplayTimer);
-      if (images.length > 1) autoplayTimer = window.setTimeout(reveal, 7000);
+      if (images.length > 1) autoplayTimer = window.setTimeout(reveal, autoplayDelay);
     };
     const reveal = () => {
       if (images.length < 2 || !strips.length || isTransitioning || isResizing) {
@@ -216,6 +217,22 @@
     if (facade) facade.dataset.rhythm = button.dataset.rhythm;
     });
   });
+
+  const craftGrid = document.querySelector('.craft-grid-cards');
+  if (craftGrid) {
+    if ('IntersectionObserver' in window) {
+      const craftObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          craftGrid.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.25 });
+      craftObserver.observe(craftGrid);
+    } else {
+      craftGrid.classList.add('is-visible');
+    }
+  }
 
   const setupSwiper = (selector, options) => {
     const element = document.querySelector(selector);
