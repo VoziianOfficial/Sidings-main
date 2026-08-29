@@ -245,7 +245,7 @@
     { title: 'Benefits', type: 'Section', url: 'index.html#benefits', description: 'Protection, appearance, efficiency and durability.', keywords: 'benefits why siding protection appearance efficiency durability' },
     { title: 'Exterior Rhythm', type: 'Section', url: 'index.html#rhythm', description: 'Horizontal, vertical and mixed siding direction.', keywords: 'exterior rhythm direction horizontal vertical mixed siding' },
     { title: 'Process', type: 'Section', url: 'index.html#process', description: 'Discover, compare, prepare and complete workflow.', keywords: 'process path rhythm discover compare prepare complete workflow' },
-    { title: 'Testimonials', type: 'Section', url: 'index.html#testimonials', description: 'Home testimonial slider.', keywords: 'testimonials reviews words swiper slider homeowner renovator restorer' },
+    { title: 'Three Ways In', type: 'Section', url: 'index.html#testimonials', description: 'Siding services, repair and installation highlight cards.', keywords: 'services repair installation highlights cards hover three ways in' },
     { title: 'FAQ', type: 'Section', url: 'index.html#faq', description: 'Common siding questions.', keywords: 'faq questions begin material repair proportions accordion' },
     { title: 'Contact', type: 'Section', url: 'index.html#contact', description: 'Project enquiry form.', keywords: 'contact form enquiry send project email' },
     { title: 'Installation Hero', type: 'Section', url: 'installation.html#installation-main', description: 'Siding installation page opening.', keywords: 'installation hero siding install service' },
