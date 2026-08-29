@@ -253,12 +253,66 @@ button:disabled {
 }
 
 .search {
+    position: relative;
     height: 36px;
     width: 42px;
+    display: grid;
+    place-items: center;
     border-radius: 999px;
-    background: var(--blue);
+    background: rgba(255, 255, 255, .92);
     color: var(--ink);
-    font-size: 17px
+    font-size: 0;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .62), 0 8px 18px rgba(0, 0, 0, .12);
+    overflow: hidden;
+    transition: background .24s ease, color .24s ease, box-shadow .24s ease, transform .24s ease
+}
+
+.search:before {
+    content: "";
+    position: absolute;
+    left: 13px;
+    top: 10px;
+    width: 11px;
+    height: 11px;
+    border: 1.8px solid currentColor;
+    border-radius: 50%;
+    opacity: .92;
+    transition: transform .24s ease, opacity .24s ease
+}
+
+.search:after {
+    content: "";
+    position: absolute;
+    left: 24px;
+    top: 23px;
+    width: 8px;
+    height: 1.8px;
+    border-radius: 999px;
+    background: currentColor;
+    opacity: .92;
+    transform: rotate(45deg);
+    transform-origin: left center;
+    transition: transform .24s ease, opacity .24s ease
+}
+
+.search:hover,
+.search:focus-visible {
+    background: var(--green);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .42), 0 12px 24px rgba(0, 0, 0, .16);
+    outline: 0;
+    transform: translateY(-1px)
+}
+
+.search:hover:before,
+.search:focus-visible:before {
+    opacity: 1;
+    transform: scale(1.04)
+}
+
+.search:hover:after,
+.search:focus-visible:after {
+    opacity: 1;
+    transform: rotate(45deg) scaleX(1.08)
 }
 
 .dropdown {
