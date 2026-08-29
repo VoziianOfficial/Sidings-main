@@ -234,6 +234,57 @@
     }
   }
 
+  const craftStats = document.querySelector('.craft-stats');
+  if (craftStats) {
+    const counters = [...craftStats.querySelectorAll('.craft-stat strong')].map((counter) => {
+      const original = counter.textContent.trim();
+      const value = Number(original.replace(/[^\d]/g, ''));
+      const prefix = original.match(/^\D+/)?.[0] || '';
+      const suffix = original.match(/\D+$/)?.[0] || '';
+      counter.dataset.countTo = String(value);
+      counter.dataset.prefix = prefix;
+      counter.dataset.suffix = suffix;
+      counter.textContent = `${prefix}0${suffix}`;
+      return counter;
+    }).filter((counter) => Number.isFinite(Number(counter.dataset.countTo)));
+
+    const formatCounter = (counter, value) => {
+      counter.textContent = `${counter.dataset.prefix}${Math.round(value).toLocaleString('en-US')}${counter.dataset.suffix}`;
+    };
+    const runCounters = () => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      counters.forEach((counter) => {
+        const target = Number(counter.dataset.countTo);
+        if (reduceMotion) {
+          formatCounter(counter, target);
+          return;
+        }
+        const duration = 1300;
+        const start = performance.now();
+        const tick = (now) => {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          formatCounter(counter, target * eased);
+          if (progress < 1) window.requestAnimationFrame(tick);
+        };
+        window.requestAnimationFrame(tick);
+      });
+    };
+
+    if ('IntersectionObserver' in window) {
+      const statsObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          runCounters();
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.35 });
+      statsObserver.observe(craftStats);
+    } else {
+      runCounters();
+    }
+  }
+
   const setupSwiper = (selector, options) => {
     const element = document.querySelector(selector);
     if (!element || !window.Swiper) return;
