@@ -41,13 +41,13 @@
 @media(max-width:1100px){.service-feature-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:42px 18px}.service-feature-card{min-height:215px}}@media(max-width:560px){.service-feature-cards{grid-template-columns:1fr;gap:38px;padding-top:24px}.service-feature-card{min-height:205px;padding:66px 20px 24px;border-radius:20px}.feature-icon{left:24px;width:70px;height:70px;border-width:12px;border-radius:22px}.feature-icon svg{width:31px;height:31px}.service-feature-card h3{font-size:28px}.service-feature-card p{font-size:14px;line-height:1.55}}@media(prefers-reduced-motion:reduce){.service-feature-card{transition:none;opacity:1;transform:none}}
 
 /* Installation rail: full-card photo reveal */
-.installation-rail-section .rail{min-height:clamp(320px,34vw,500px);padding:0;background:var(--ink);border:1px solid rgba(16,17,16,.12);box-shadow:0 24px 64px rgba(16,17,16,.12);cursor:pointer}
-.installation-rail-section .rail:before{content:'';position:absolute;inset:0;z-index:0;background:repeating-linear-gradient(0deg,rgba(180,219,241,.24) 0 26px,rgba(255,255,255,.08) 27px 30px);transition:opacity .35s ease}
+.installation-rail-section .rail{min-height:clamp(260px,27vw,390px);padding:0;background:var(--ink) url("../images/materials/board-close-wall.png") center/cover no-repeat;border:1px solid rgba(16,17,16,.12);box-shadow:0 24px 64px rgba(16,17,16,.12);cursor:pointer}
+.installation-rail-section .rail:before{content:'';position:absolute;inset:0;z-index:0;background:linear-gradient(90deg,rgba(16,17,16,.62),rgba(16,17,16,.34) 46%,rgba(16,17,16,.6));backdrop-filter:blur(5px) saturate(1.08);-webkit-backdrop-filter:blur(5px) saturate(1.08);transition:opacity .35s ease}
 .installation-rail-section .install-rail{position:absolute;inset:0;z-index:1;width:100%;height:100%;border:0;background:url("../images/service-insights/installation-rail-reveal.webp") center/cover no-repeat;transform:translate3d(-101%,0,0);transition:transform 1.05s cubic-bezier(.22,1,.36,1);will-change:transform}
 .installation-rail-section .install-rail:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(16,17,16,.1),rgba(16,17,16,.02) 48%,rgba(16,17,16,.18));pointer-events:none}
 .installation-rail-section .rail:hover .install-rail,.installation-rail-section .rail:focus-visible .install-rail{width:100%;transform:translate3d(0,0,0)}
 .installation-rail-section .rail:hover:before,.installation-rail-section .rail:focus-visible:before{opacity:0}
-@media(max-width:620px){.installation-rail-section .rail{min-height:300px}.installation-rail-section .install-rail{background-position:57% center}}@media(prefers-reduced-motion:reduce){.installation-rail-section .install-rail,.installation-rail-section .rail:before{transition:none;will-change:auto}}
+@media(max-width:620px){.installation-rail-section .rail{min-height:240px}.installation-rail-section .install-rail{background-position:57% center}}@media(prefers-reduced-motion:reduce){.installation-rail-section .install-rail,.installation-rail-section .rail:before{transition:none;will-change:auto}}
 
 /* Material bands: generated photo backgrounds with glass-readable copy */
 .material-bands-section .bands{gap:12px;padding:12px;background:var(--ink);border:1px solid rgba(255,255,255,.08);box-shadow:0 24px 60px rgba(16,17,16,.16)}
