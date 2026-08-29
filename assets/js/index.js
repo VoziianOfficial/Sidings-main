@@ -248,7 +248,7 @@
       const rect = faqSection.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight;
       const progress = Math.min(1, Math.max(0, (vh - rect.top) / (vh + rect.height)));
-      const offset = (progress - 0.5) * 70;
+      const offset = (progress - 0.5) * 120;
       faqPhoto.style.transform = `translate3d(0,${offset.toFixed(1)}px,0)`;
     };
     window.addEventListener('scroll', () => {
