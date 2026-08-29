@@ -88,7 +88,7 @@
 @media(max-width:850px){.profile-scale-section{padding:46px 0}.profile-scale-section .premium-scale{min-height:clamp(320px,56vw,430px)}.profile-scale-section .premium-scale .scale-sample{min-height:calc(clamp(320px,56vw,430px) - 26px)}.profile-scale-section .scale-copy{bottom:20px}.profile-scale-section .scale-copy .control{min-height:36px;padding-inline:14px}}@media(max-width:480px){.profile-scale-section .premium-scale{padding:10px;border-radius:20px;min-height:330px}.profile-scale-section .premium-scale .scale-sample{min-height:310px;border-radius:15px}.profile-scale-section .sample-courses{left:10%;right:12%;bottom:24%}.profile-scale-section .dimension{right:5%;width:18%}.profile-scale-section .scale-copy{bottom:16px;width:calc(100% - 24px)}.profile-scale-section .scale-copy .material-controls{width:100%;border-radius:18px;padding:6px}.profile-scale-section .scale-copy .control{flex:1;min-width:0;padding-inline:6px;font-size:8px;letter-spacing:.04em}}
 
 /* Wide compact zoning cards for service pages */
-.zoning-section{padding:clamp(42px,5vw,72px) 0}
+.zoning-section{padding:clamp(42px,5vw,72px) 0;background:var(--ink);color:#fff}
 .zoning-section .premium-zoning{display:grid;grid-template-columns:1fr;gap:0;min-height:0;background:#f8faf6;border-radius:22px;border:1px solid rgba(16,17,16,.1);box-shadow:0 22px 58px rgba(16,17,16,.1);overflow:hidden}
 .zoning-section .premium-zoning .zoning-model{width:100%;min-height:clamp(300px,34vw,440px);border-radius:0;background-size:cover;background-position:center 50%}
 .zoning-section .premium-zoning .zoning-model:before{background:linear-gradient(180deg,rgba(16,17,16,.02),rgba(16,17,16,.12));z-index:0}
@@ -112,17 +112,20 @@
 
 /* Pricing / package cards (after the zoning section on every service page) */
 .package-section{position:relative;isolation:isolate;padding:clamp(64px,8vw,112px) 0}
-.package-section:before{content:'';position:absolute;inset:0;z-index:0;background:radial-gradient(620px circle at 10% 8%,rgba(188,226,144,.12),transparent 60%),radial-gradient(560px circle at 92% 94%,rgba(180,219,241,.1),transparent 58%);pointer-events:none}
+.package-section:before{display:none}
 .package-section .container{position:relative;z-index:1}
 .package-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.4vw,28px);align-items:center}
-.package-card{position:relative;padding:clamp(30px,3vw,42px) clamp(24px,2.6vw,34px) clamp(32px,3vw,40px);border-radius:var(--radius);background:var(--foam);color:var(--ink);text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.22);opacity:0;transform:translateY(34px);transition:opacity .7s ease,transform .7s cubic-bezier(.22,.8,.25,1),box-shadow .35s ease}
+.package-card{position:relative;padding:clamp(30px,3vw,42px) clamp(24px,2.6vw,34px) clamp(32px,3vw,40px);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);background:var(--foam);color:var(--ink);text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.22);opacity:0;transform:translateY(34px);overflow:hidden;transition:opacity .7s ease,transform .7s cubic-bezier(.22,.8,.25,1),box-shadow .55s cubic-bezier(.22,1,.36,1),border-color .45s ease,filter .45s ease}
+.package-card:before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(255,255,255,.32),rgba(255,255,255,0) 52%);opacity:0;pointer-events:none;transition:opacity .5s ease}
+.package-card>*{position:relative;z-index:1}
 .package-card--accent{background:var(--green);transform:translateY(34px) scale(1.04);box-shadow:0 30px 76px rgba(0,0,0,.3);z-index:2}
 .package-grid.is-visible .package-card{opacity:1;transform:none}
 .package-grid.is-visible .package-card--accent{transform:scale(1.04)}
 .package-grid.is-visible .package-card:nth-child(2){transition-delay:.12s}
 .package-grid.is-visible .package-card:nth-child(3){transition-delay:.24s}
-.package-card:hover{transform:translateY(-8px);box-shadow:0 30px 74px rgba(0,0,0,.28)}
-.package-card--accent:hover{transform:translateY(-10px) scale(1.04)}
+.package-card:hover,.package-card:focus-within{transform:translateY(-6px);border-color:rgba(255,255,255,.24);box-shadow:0 34px 82px rgba(0,0,0,.32),0 0 0 1px rgba(188,226,144,.12);filter:saturate(1.02)}
+.package-card:hover:before,.package-card:focus-within:before{opacity:.72}
+.package-card--accent:hover,.package-card--accent:focus-within{transform:translateY(-8px) scale(1.04);box-shadow:0 38px 88px rgba(0,0,0,.34),0 0 0 1px rgba(188,226,144,.2)}
 .package-label{display:inline-flex;align-items:center;padding:9px 18px;border:1.5px dashed rgba(16,17,16,.32);border-radius:999px;font:800 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(16,17,16,.68)}
 .package-card--accent .package-label{border-style:solid;border-color:var(--ink);background:var(--ink);color:#fff}
 .package-price{margin:22px 0 4px;display:flex;flex-direction:column;align-items:center;gap:2px}
@@ -140,7 +143,7 @@
 .package-card--accent .package-cta:hover{background:#2b2f2b}
 .package-note{margin:14px 0 0;font-size:12px;color:rgba(16,17,16,.55)}
 .package-card--accent .package-note{color:rgba(16,17,16,.62)}
-@media(max-width:1024px){.package-card--accent,.package-grid.is-visible .package-card--accent{transform:none}.package-card--accent:hover{transform:translateY(-8px)}}
+@media(max-width:1024px){.package-card--accent,.package-grid.is-visible .package-card--accent{transform:none}.package-card--accent:hover,.package-card--accent:focus-within{transform:translateY(-6px)}}
 @media(max-width:850px){.package-grid{grid-template-columns:1fr;max-width:460px;margin-inline:auto;gap:22px}.package-card--accent{order:-1}}
 @media(max-width:480px){.package-card{padding:28px 20px 30px;border-radius:22px}.package-amount{font-size:clamp(34px,10vw,42px)}}
 @media(prefers-reduced-motion:reduce){.package-card{transition:none;opacity:1;transform:none}.package-card--accent{transform:none}}
