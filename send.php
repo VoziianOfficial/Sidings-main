@@ -60,6 +60,7 @@ $name = clean_text($_POST['name'] ?? '', 120);
 $rawEmail = trim((string) ($_POST['email'] ?? ''));
 $service = clean_text($_POST['service'] ?? '', 80);
 $zip = clean_text($_POST['zip'] ?? '', 10);
+$message = clean_text($_POST['message'] ?? '', 4000);
 $policy = ($_POST['policy'] ?? '') !== '';
 
 if ($name === '' || $rawEmail === '' || $service === '' || $zip === '' || !$policy) {
@@ -84,6 +85,9 @@ if (has_header_injection($siteEmail) || !filter_var($siteEmail, FILTER_VALIDATE_
 $company = clean_header_text(site_config_value($config, 'companyName') ?: 'Website', 80);
 $subject = clean_header_text('New ' . $company . ' enquiry', 120);
 $body = "Name: {$name}\nEmail: {$userEmail}\nService: {$service}\nZIP code: {$zip}";
+if ($message !== '') {
+    $body .= "\n\n{$message}";
+}
 $headers = [
     'From: ' . $company . ' <' . $siteEmail . '>',
     'Reply-To: ' . $userEmail,
