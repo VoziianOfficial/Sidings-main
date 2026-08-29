@@ -72,3 +72,22 @@
   .legal-callout{grid-template-columns:1fr;gap:12px;padding:15px;border-radius:18px}
   .legal-callout-icon{width:34px;height:34px}
 }
+
+/* Legacy legal page alignment */
+.legal>.container.content{max-width:860px;padding-top:clamp(108px,11vw,150px)}
+.legal>.container.content>.title{text-align:center;margin-inline:auto;color:#0f3f31}
+.legal>.container.content>p:first-of-type{max-width:690px;margin:14px auto 34px;text-align:center;color:rgba(16,17,16,.68);font-size:clamp(16px,1.35vw,20px);line-height:1.65}
+.legal>.container.content>h2{margin:30px 0 12px;color:#0f3f31;font:800 clamp(28px,3vw,42px)/1.02 var(--serif);letter-spacing:-.055em}
+.legal>.container.content>p:not(:first-of-type){margin:0;color:rgba(16,17,16,.72);font-size:16px;line-height:1.82}
+
+@media(max-width:1024px){
+  .legal>.container.content{width:min(100% - var(--mobile-container-gutter, 40px),860px);padding-top:104px}
+  .legal>.container.content>.title{max-width:min(100%,760px);text-wrap:balance}
+}
+
+@media(max-width:560px){
+  .legal>.container.content{padding-top:96px}
+  .legal>.container.content>p:first-of-type{margin-bottom:28px;font-size:15px;line-height:1.6}
+  .legal>.container.content>h2{text-align:left;font-size:clamp(25px,8vw,32px)}
+  .legal>.container.content>p:not(:first-of-type){font-size:14px;line-height:1.72}
+}

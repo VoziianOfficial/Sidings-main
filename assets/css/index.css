@@ -260,3 +260,59 @@
 @media(max-width:480px){.approach-section{padding-block:38px}.approach-parallax{height:min(48vw,240px);border-radius:20px}.approach-tab{padding:13px 18px;font-size:12.5px}.approach-copy .title{font-size:clamp(26px,8vw,32px)}}
 @media(prefers-reduced-motion:reduce){.approach-parallax-img{transform:none!important}.approach-copy,.approach-media{transition:none}}
 .approach-panels,.approach-copy,.approach-media,.approach-tabs,.approach-list,.approach-tab{min-width:0;max-width:100%}
+
+/* Mobile and tablet axis polish */
+@media(max-width:1024px){
+  .craft-grid,.material,.rhythm,.contact-grid,.mosaic-layout,.approach-panels{grid-template-columns:1fr;gap:clamp(28px,5vw,44px);justify-items:center}
+  .craft-content,.material>div:not(.material-wall),.rhythm-copy,.contact-intro,.mosaic-content,.approach-copy{width:100%;max-width:760px;text-align:center;justify-items:center;margin-inline:auto}
+  .craft-content .copy,.material .matter-copy,.rhythm-copy .copy,.contact-intro .copy,.mosaic-content .copy,.approach-copy .copy{max-width:680px;margin-inline:auto}
+  .craft-visual,.material-wall,.rhythm-facade,.mosaic-visual,.approach-media,.approach-parallax,.contact-form{width:100%;max-width:760px;margin-inline:auto}
+  .craft-photo{width:100%;margin-inline:auto}
+  .craft-stats{width:calc(100% - 44px);margin-inline:auto}
+  .craft-grid-cards{width:100%;max-width:620px;margin-inline:auto;justify-content:center}
+  .services-head{justify-items:center;text-align:center}
+  .services-head .title,.services-head .copy{margin-inline:auto;text-align:center}
+  .service-list,.highlight-grid{width:100%;max-width:760px;margin-inline:auto}
+  .service-card{width:100%;margin-inline:auto}
+  .expanding-row,.process-row{width:100%;max-width:760px;margin-inline:auto}
+  .contact-actions,.material-controls,.showcase-controls{justify-content:center}
+  .contact-email{justify-self:center}
+  .faq-head{margin-inline:auto;text-align:center}
+  .faq-head .kicker{justify-content:center}
+  .faq-panel{max-width:760px;margin-inline:auto}
+  .approach-tabs{justify-content:center}
+}
+
+@media(max-width:850px){
+  .craft-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .expanding-row,.process-row{height:auto;display:grid;grid-template-columns:1fr;gap:14px}
+  .expand-card,.process-stage{width:100%;min-height:210px;margin-inline:auto}
+  .process-stage p{max-height:none;opacity:1}
+  .benefits-section .expand-card{min-height:300px}
+}
+
+@media(max-width:620px){
+  .craft-stats{grid-template-columns:repeat(2,minmax(0,1fr));width:calc(100% - 24px)}
+  .craft-stat:nth-child(-n+4){border-bottom:1px solid var(--line)}
+  .craft-stat:not(:nth-child(3n)):after{display:none}
+  .craft-stat:not(:nth-child(2n)):after{content:'';display:block;position:absolute;top:18%;bottom:18%;right:0;width:1px;background:var(--line)}
+  .craft-grid-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .service-card{max-width:460px}
+  .contact-form{grid-template-columns:1fr;padding:22px 18px}
+  .contact-form .pill{justify-self:center}
+  .contact-policy{align-items:flex-start;text-align:left}
+  .approach-tabs{justify-content:flex-start;margin-inline:auto;width:100%;max-width:100%;padding-inline:2px}
+}
+
+@media(max-width:480px){
+  .hero h1{max-width:min(100%,330px);font-size:clamp(34px,10vw,39px);line-height:.98;letter-spacing:-.02em}
+  .service-hero h1{max-width:min(100%,340px)}
+  .craft-grid,.material,.rhythm,.contact-grid,.mosaic-layout,.approach-panels{gap:28px}
+  .craft-stats{margin-top:-42px}
+  .craft-stat{padding:16px 12px;text-align:center}
+  .material-wall,.rhythm-facade,.faq-photo,.approach-parallax{border-radius:20px}
+  .service-review-copy{text-align:left}
+  .before-after-media{height:clamp(220px,64vw,286px)}
+  .faq-panel{padding:24px 18px}
+  .mosaic-cta{margin-inline:auto}
+}
