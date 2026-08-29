@@ -41,6 +41,79 @@
     document.querySelectorAll('[data-disclaimer]').forEach((el) => { el.textContent = disclaimer; });
   }
 
+  const initConsentCard = () => {
+    if (window.__SIDINGS_CONSENT_READY__) return;
+    window.__SIDINGS_CONSENT_READY__ = true;
+
+    const storageKey = 'sidingsConsent';
+    const getConsent = () => {
+      try {
+        return window.localStorage.getItem(storageKey);
+      } catch (error) {
+        return null;
+      }
+    };
+    const setConsent = (value) => {
+      window.SidingsConsent = value;
+      try {
+        window.localStorage.setItem(storageKey, value);
+      } catch (error) {
+        document.documentElement.dataset.sidingsConsent = value;
+      }
+    };
+
+    const existingConsent = getConsent();
+    if (existingConsent === 'accepted' || existingConsent === 'declined') {
+      window.SidingsConsent = existingConsent;
+      return;
+    }
+    if (document.querySelector('[data-consent-card]')) return;
+
+    const card = document.createElement('aside');
+    card.className = 'consent-card';
+    card.dataset.consentCard = 'true';
+    card.setAttribute('aria-label', 'Privacy and cookie notice');
+    card.innerHTML = `
+      <p class="consent-copy">We use cookies to improve your experience. By continuing, you agree to our Privacy and Cookie Policy.</p>
+      <div class="consent-actions">
+        <a class="consent-link" href="privacy-policy.html">Privacy Policy</a>
+        <button class="consent-btn consent-decline" type="button">Decline</button>
+        <button class="consent-btn consent-accept" type="button">Accept</button>
+      </div>
+    `;
+
+    const updateOffset = () => {
+      if (!card.isConnected || !card.classList.contains('is-visible')) return;
+      const height = Math.ceil(card.getBoundingClientRect().height);
+      const bottom = Number.parseFloat(getComputedStyle(card).bottom) || 0;
+      document.body.style.setProperty('--consent-offset', `${height + bottom + 10}px`);
+      document.body.classList.add('has-consent-card');
+    };
+    const hide = (value) => {
+      setConsent(value);
+      card.classList.remove('is-visible');
+      card.classList.add('is-hiding');
+      document.body.classList.remove('has-consent-card');
+      document.body.style.removeProperty('--consent-offset');
+      resizeObserver?.disconnect();
+      window.removeEventListener('resize', updateOffset);
+      window.setTimeout(() => card.remove(), 460);
+    };
+
+    card.querySelector('.consent-accept')?.addEventListener('click', () => hide('accepted'));
+    card.querySelector('.consent-decline')?.addEventListener('click', () => hide('declined'));
+    document.body.append(card);
+
+    const resizeObserver = 'ResizeObserver' in window ? new ResizeObserver(updateOffset) : null;
+    resizeObserver?.observe(card);
+    window.addEventListener('resize', updateOffset, { passive: true });
+    window.requestAnimationFrame(() => {
+      card.classList.add('is-visible');
+      updateOffset();
+    });
+  };
+  initConsentCard();
+
   const initBeforeAfter = (root) => {
     if (!root || root.dataset.beforeAfterReady === 'true') return;
     const stage = root.querySelector('.before-after-media');
