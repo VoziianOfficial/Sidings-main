@@ -41,6 +41,58 @@
     document.querySelectorAll('[data-disclaimer]').forEach((el) => { el.textContent = disclaimer; });
   }
 
+  const setupMarquees = () => {
+    document.querySelectorAll('.marquee').forEach((marquee) => {
+      if (marquee.dataset.marqueeReady === 'true') return;
+      const track = marquee.querySelector('.marquee-track');
+      if (!track) return;
+      let source = track.querySelector('.marquee-group:not([data-marquee-clone])');
+      if (!source) {
+        source = document.createElement('div');
+        source.className = 'marquee-group';
+        while (track.firstChild) source.appendChild(track.firstChild);
+        track.appendChild(source);
+      }
+      marquee.dataset.marqueeReady = 'true';
+      source.dataset.marqueeSource = 'true';
+
+      let resizeFrame = 0;
+      const sync = () => {
+        resizeFrame = 0;
+        track.querySelectorAll('[data-marquee-clone="true"]').forEach((clone) => clone.remove());
+        const sourceWidth = source.getBoundingClientRect().width;
+        const marqueeWidth = marquee.getBoundingClientRect().width;
+        if (!sourceWidth || !marqueeWidth) return;
+        const coverageWidth = Math.max(marqueeWidth, window.innerWidth || 0, document.documentElement.clientWidth || 0, 4096);
+        let trackWidth = sourceWidth;
+        while (trackWidth < coverageWidth + sourceWidth + 2) {
+          const clone = source.cloneNode(true);
+          clone.dataset.marqueeClone = 'true';
+          clone.setAttribute('aria-hidden', 'true');
+          track.appendChild(clone);
+          trackWidth += sourceWidth;
+        }
+        track.style.setProperty('--marquee-distance', `${sourceWidth}px`);
+      };
+      const requestSync = () => {
+        if (resizeFrame) return;
+        resizeFrame = window.requestAnimationFrame(() => {
+          resizeFrame = window.requestAnimationFrame(sync);
+        });
+      };
+
+      sync();
+      if (document.fonts?.ready) document.fonts.ready.then(requestSync);
+      if ('ResizeObserver' in window) {
+        const observer = new ResizeObserver(requestSync);
+        observer.observe(marquee);
+        observer.observe(source);
+      }
+      window.addEventListener('resize', requestSync, { passive: true });
+    });
+  };
+  setupMarquees();
+
   const header = document.querySelector('.site-header');
   let scrollTicking = false;
   const syncHeader = () => {
