@@ -144,7 +144,7 @@
 @media(max-width:1024px){.hero,.service-hero{padding-inline:12px}.hero h1,.service-hero h1{font-size:clamp(46px,12vw,104px);line-height:.9}.services-head,.contact-grid>div{text-align:center}.material-controls{justify-content:center}.showcase-controls{justify-content:center}.contact-form .pill{justify-self:center}.testimonial{padding:30px}.testimonial q{font-size:clamp(23px,5vw,36px)}}@media(max-width:480px){.hero{min-height:500px}.hero h1,.service-hero h1{font-size:clamp(39px,12vw,48px);line-height:.95;letter-spacing:-.035em;max-width:calc(100% - 24px)}.service-card{padding:26px 22px;border-radius:22px}.service-card h3{transform:none!important}.service-card:hover h3,.service-card:focus-visible h3{transform:none}.panels-icon{width:100%}.material-controls{gap:8px}.contact-form input,.contact-form textarea,.contact-form select{font-size:16px}.testimonial{padding:24px}.testimonial small{align-self:flex-start}.compare-handle:after{width:42px;height:42px}.project-swiper .facade-board,.project-swiper .facade-board.active,.testimonial-swiper .project{flex-basis:82%;width:82%;max-width:100%}}
 
 /* Services testimonials */
-.services-section{background:var(--foam);padding-block:clamp(78px,8vw,128px)}
+.services-section{background:var(--foam);padding-block:clamp(39px,4vw,64px)}
 .services-section .container{width:min(1360px,calc(100% - 40px));display:grid;justify-items:center}
 .services-ornament{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:24px;color:#477e43}
 .services-ornament span{display:block;width:94px;border-top:3px dotted currentColor;opacity:.8}
@@ -224,8 +224,8 @@
 .mosaic-layout,.mosaic-visual,.mosaic-content,.mosaic-tiles,.mosaic-tile{min-width:0;max-width:100%}
 
 /* approach section: parallax band + interactive tabs (after contact) */
-.approach-section{background:#fff}
-.approach-parallax{position:relative;height:clamp(300px,34vw,480px);border-radius:var(--radius);overflow:hidden;isolation:isolate;box-shadow:0 30px 70px rgba(16,17,16,.14)}
+.approach-section{background:#fff;padding-block:clamp(48px,6vw,92px)}
+.approach-parallax{position:relative;height:clamp(240px,28vw,380px);border-radius:var(--radius);overflow:hidden;isolation:isolate;box-shadow:0 30px 70px rgba(16,17,16,.14)}
 .approach-parallax-img{position:absolute;left:0;top:-15%;width:100%;height:130%;object-fit:cover;object-position:center;transform:translate3d(0,0,0) scale(1.04);will-change:transform;backface-visibility:hidden}
 .approach-parallax-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,17,16,.1),rgba(16,17,16,.32) 70%,rgba(16,17,16,.5));pointer-events:none}
 .approach-tabs{display:flex;justify-content:center;flex-wrap:wrap;gap:14px;margin-top:clamp(22px,3vw,34px)}
@@ -237,8 +237,8 @@
 .approach-tab.is-active{background:var(--ink);border-color:var(--ink);color:#fff;box-shadow:0 18px 40px rgba(16,17,16,.18)}
 .approach-tab.is-active .approach-tab-icon{background:var(--green);color:var(--ink)}
 .approach-tab:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-.approach-panels{margin-top:clamp(38px,5vw,64px);display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(30px,5vw,72px);align-items:stretch}
-.approach-copy{min-height:clamp(340px,30vw,420px);display:flex;flex-direction:column;justify-content:center;transition:opacity .32s cubic-bezier(.22,1,.36,1),transform .32s cubic-bezier(.22,1,.36,1)}
+.approach-panels{margin-top:clamp(28px,4vw,48px);display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(24px,4vw,56px);align-items:stretch}
+.approach-copy{min-height:clamp(280px,24vw,340px);display:flex;flex-direction:column;justify-content:center;transition:opacity .32s cubic-bezier(.22,1,.36,1),transform .32s cubic-bezier(.22,1,.36,1)}
 .approach-copy .kicker{margin-bottom:14px}
 .approach-copy .title{font-size:clamp(30px,3.6vw,50px);margin-bottom:16px}
 .approach-copy .copy{margin:0 0 26px;color:rgba(16,17,16,.68)}
@@ -247,7 +247,7 @@
 .approach-list li:first-child{padding-top:0;border-top:0}
 .approach-list-icon{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--foam);color:#477e43;flex:0 0 auto}
 .approach-list-icon svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.approach-media{position:relative;min-height:clamp(340px,30vw,420px);border-radius:var(--radius);overflow:hidden;box-shadow:0 26px 60px rgba(16,17,16,.13);transition:opacity .36s cubic-bezier(.22,1,.36,1),transform .36s cubic-bezier(.22,1,.36,1)}
+.approach-media{position:relative;min-height:clamp(280px,24vw,340px);border-radius:var(--radius);overflow:hidden;box-shadow:0 26px 60px rgba(16,17,16,.13);transition:opacity .36s cubic-bezier(.22,1,.36,1),transform .36s cubic-bezier(.22,1,.36,1)}
 .approach-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
 .approach-copy.is-leaving,.approach-copy.is-entering{opacity:0}
 .approach-copy.is-leaving{transform:translateY(-14px)}
@@ -255,8 +255,8 @@
 .approach-media.is-leaving,.approach-media.is-entering{opacity:0}
 .approach-media.is-leaving{transform:scale(.97)}
 .approach-media.is-entering{transform:scale(1.035)}
-@media(max-width:850px){.approach-panels{grid-template-columns:1fr;gap:32px}.approach-media{min-height:min(70vw,360px)}.approach-copy{min-height:0;text-align:center}.approach-list{text-align:left;max-width:440px;margin-inline:auto}.approach-copy .copy{margin-inline:auto}}
+@media(max-width:850px){.approach-section{padding-block:46px}.approach-panels{grid-template-columns:1fr;gap:28px}.approach-media{min-height:min(58vw,300px)}.approach-copy{min-height:0;text-align:center}.approach-list{text-align:left;max-width:440px;margin-inline:auto}.approach-copy .copy{margin-inline:auto}}
 @media(max-width:560px){.approach-tabs{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.approach-tabs::-webkit-scrollbar{display:none}.approach-tab{flex:0 0 auto}}
-@media(max-width:480px){.approach-parallax{height:min(60vw,320px);border-radius:20px}.approach-tab{padding:13px 18px;font-size:12.5px}.approach-copy .title{font-size:clamp(26px,8vw,32px)}}
+@media(max-width:480px){.approach-section{padding-block:38px}.approach-parallax{height:min(48vw,240px);border-radius:20px}.approach-tab{padding:13px 18px;font-size:12.5px}.approach-copy .title{font-size:clamp(26px,8vw,32px)}}
 @media(prefers-reduced-motion:reduce){.approach-parallax-img{transform:none!important}.approach-copy,.approach-media{transition:none}}
 .approach-panels,.approach-copy,.approach-media,.approach-tabs,.approach-list,.approach-tab{min-width:0;max-width:100%}

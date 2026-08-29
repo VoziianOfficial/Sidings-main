@@ -70,6 +70,36 @@
   };
   document.querySelectorAll('[data-service-accordion]').forEach(initServiceAccordion);
 
+  const initDetailAccordion = (accordion) => {
+    const items = [...accordion.querySelectorAll('.detail-accordion-item')];
+    if (!items.length) return;
+    if (!items.some((item) => item.classList.contains('is-open'))) items[0].classList.add('is-open');
+    const openItem = (item, focusItem = false) => {
+      items.forEach((entry) => {
+        const isOpen = entry === item;
+        entry.classList.toggle('is-open', isOpen);
+        entry.querySelector('.detail-trigger')?.setAttribute('aria-expanded', String(isOpen));
+      });
+      if (focusItem) item.querySelector('.detail-trigger')?.focus();
+    };
+    items.forEach((item, index) => {
+      const trigger = item.querySelector('.detail-trigger');
+      if (!trigger) return;
+      trigger.type = 'button';
+      trigger.setAttribute('aria-expanded', String(item.classList.contains('is-open')));
+      trigger.addEventListener('click', () => openItem(item));
+      trigger.addEventListener('keydown', (event) => {
+        const keys = ['ArrowDown', 'ArrowUp', 'Home', 'End'];
+        if (!keys.includes(event.key)) return;
+        event.preventDefault();
+        const lastIndex = items.length - 1;
+        const nextIndex = event.key === 'Home' ? 0 : event.key === 'End' ? lastIndex : event.key === 'ArrowDown' ? Math.min(index + 1, lastIndex) : Math.max(index - 1, 0);
+        openItem(items[nextIndex], true);
+      });
+    });
+  };
+  document.querySelectorAll('[data-detail-accordion]').forEach(initDetailAccordion);
+
   const parallaxImages = [...document.querySelectorAll('[data-parallax-image]')];
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (parallaxImages.length) {
@@ -164,6 +194,22 @@
         });
       }, { threshold: 0.2 });
       packageGrids.forEach((grid) => packageObserver.observe(grid));
+    }
+  }
+
+  const highlightSplits = document.querySelectorAll('.highlight-split');
+  if (highlightSplits.length) {
+    if (!('IntersectionObserver' in window)) {
+      highlightSplits.forEach((split) => split.classList.add('in-view'));
+    } else {
+      const highlightObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.2 });
+      highlightSplits.forEach((split) => highlightObserver.observe(split));
     }
   }
 }());

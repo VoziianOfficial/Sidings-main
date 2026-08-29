@@ -396,7 +396,6 @@
     { title: 'Installation Hero', type: 'Section', url: 'installation.html#installation-main', description: 'Siding installation page opening.', keywords: 'installation hero siding install service' },
     { title: 'Facade Zoning', type: 'Section', url: 'installation.html#facade-zoning', description: 'Interactive elevation zones.', keywords: 'facade zoning main wall gable corners openings trim installation' },
     { title: 'Profile Scale Lab', type: 'Section', url: 'installation.html#profile-scale', description: 'Panel width and reveal controls.', keywords: 'profile scale lab panel width reveal balanced narrow wide installation' },
-    { title: 'Trim Composer', type: 'Section', url: 'installation.html#trim-composer', description: 'Window trim and opening details.', keywords: 'trim composer frame opening reveal casing sill slim standard bold installation' },
     { title: 'Material Decision Bands', type: 'Section', url: 'installation.html#material-bands', description: 'Vinyl, fiber cement and engineered wood comparison.', keywords: 'material materials decision bands vinyl fiber cement engineered wood maintenance weight' },
     { title: 'Installation Rail', type: 'Section', url: 'installation.html#installation-rail', description: 'Continuous siding surface assembly.', keywords: 'installation rail continuous surface build siding' },
     { title: 'Repair Hero', type: 'Section', url: 'repair.html#repair-main', description: 'Siding repair page opening.', keywords: 'repair hero siding damage service exterior restore' },

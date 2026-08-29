@@ -10,7 +10,7 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=DM+Mono&family=Manrope:wght@500;700;800&family=Syne:wght@600;700;800&display=swap">
     <link rel="stylesheet" href="assets/css/global.css">
-    <link rel="stylesheet" href="assets/css/service.css?v=pricing-packages"><noscript>
+    <link rel="stylesheet" href="assets/css/service.css?v=highlight-accordion"><noscript>
         <style>
             .zoning-model {
                 background-image: url("assets/images/installation/facade-zoning-installation-v2.webp")
@@ -19,15 +19,11 @@
             .scale-sample {
                 background-image: url("assets/images/installation/profile-scale.webp")
             }
-
-            .trim-cutaway {
-                background-image: url("assets/images/installation/trim-composer.webp")
-            }
         </style>
     </noscript>
     <script defer src="config/config.js"></script>
     <script defer src="assets/js/global.js"></script>
-    <script defer src="assets/js/service.js?v=pricing-packages"></script>
+    <script defer src="assets/js/service.js?v=highlight-accordion"></script>
     <title>Installation</title>
 </head>
 
@@ -217,6 +213,110 @@
                 </div>
             </div>
         </section>
+        <section class="section white service-highlight-section" aria-label="Why homeowners choose our installation team">
+            <div class="container highlight-split">
+                <div class="highlight-photo-card">
+                    <div class="highlight-photo-media"><img
+                            src="assets/images/service-insights/installation-panel-install.webp"
+                            alt="Installer aligning new siding panels on a modern home exterior" loading="lazy"
+                            width="1600" height="700"></div>
+                    <div class="highlight-photo-overlay"><span class="highlight-photo-icon" aria-hidden="true"><svg
+                                viewBox="0 0 24 24">
+                                <path d="M12 3 5 6v6c0 4.5 2.9 7.4 7 9 4.1-1.6 7-4.5 7-9V6l-7-3Z"></path>
+                                <path d="m9 12 2 2 4-5"></path>
+                            </svg></span>
+                        <h3>Built to hold its line.</h3>
+                        <p>Every course is measured, aligned and fastened the same way — so the finished wall reads
+                            as one calm surface, not a collection of panels.</p>
+                    </div>
+                </div>
+                <div class="highlight-content">
+                    <p class="kicker">Why Choose Us</p>
+                    <h2 class="title">Why Homeowners Choose Our Installation Team</h2>
+                    <p class="copy">From the first measurement to the final trim line, every installation follows
+                        the same disciplined process — so the finished exterior looks calm, fits tight and holds up
+                        through every season.</p>
+                    <div class="detail-accordion" data-detail-accordion>
+                        <article class="detail-accordion-item is-open">
+                            <button class="detail-trigger" id="detail-trigger-material"
+                                aria-controls="detail-panel-material"><span>Durable
+                                    Material Selection</span><span class="detail-icon" aria-hidden="true"><svg
+                                        viewBox="0 0 24 24">
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg></span></button>
+                            <div class="detail-panel" id="detail-panel-material" role="region"
+                                aria-labelledby="detail-trigger-material">
+                                <div class="detail-panel-inner">
+                                    <p>We match panel profile, thickness and finish to your climate and architecture,
+                                        so the material itself is built to hold up before a single fastener goes in.
+                                    </p>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="detail-accordion-item">
+                            <button class="detail-trigger" id="detail-trigger-process"
+                                aria-controls="detail-panel-process"><span>Precision
+                                    Installation Process</span><span class="detail-icon" aria-hidden="true"><svg
+                                        viewBox="0 0 24 24">
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg></span></button>
+                            <div class="detail-panel" id="detail-panel-process" role="region"
+                                aria-labelledby="detail-trigger-process">
+                                <div class="detail-panel-inner">
+                                    <p>Courses are measured, aligned and dry-fit before they’re fastened, keeping
+                                        reveals straight and seams tight across the whole elevation.</p>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="detail-accordion-item">
+                            <button class="detail-trigger" id="detail-trigger-weather"
+                                aria-controls="detail-panel-weather"><span>Weather
+                                    Protection</span><span class="detail-icon" aria-hidden="true"><svg
+                                        viewBox="0 0 24 24">
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg></span></button>
+                            <div class="detail-panel" id="detail-panel-weather" role="region"
+                                aria-labelledby="detail-trigger-weather">
+                                <div class="detail-panel-inner">
+                                    <p>House wrap, flashing and overlaps are detailed at every seam and opening so
+                                        water sheds cleanly instead of finding its way behind the wall.</p>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="detail-accordion-item">
+                            <button class="detail-trigger" id="detail-trigger-trim"
+                                aria-controls="detail-panel-trim"><span>Trim &amp; Corner
+                                    Detail</span><span class="detail-icon" aria-hidden="true"><svg
+                                        viewBox="0 0 24 24">
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg></span></button>
+                            <div class="detail-panel" id="detail-panel-trim" role="region"
+                                aria-labelledby="detail-trigger-trim">
+                                <div class="detail-panel-inner">
+                                    <p>Corners, openings and edges are finished with the same care as the main field,
+                                        so the installation reads as one continuous surface.</p>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="detail-accordion-item">
+                            <button class="detail-trigger" id="detail-trigger-care"
+                                aria-controls="detail-panel-care"><span>Clean Finish
+                                    &amp; Long-Term Care</span><span class="detail-icon" aria-hidden="true"><svg
+                                        viewBox="0 0 24 24">
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg></span></button>
+                            <div class="detail-panel" id="detail-panel-care" role="region"
+                                aria-labelledby="detail-trigger-care">
+                                <div class="detail-panel-inner">
+                                    <p>We finish with a clean job site and clear notes on upkeep, so the exterior
+                                        keeps its calm rhythm well beyond the final walk-through.</p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
         <section class="service-section zoning-section" id="facade-zoning">
             <div class="container">
                 <div class="mechanic zoning premium-zoning" data-zone="main">
@@ -333,28 +433,6 @@
                                 data-scale="narrow">Narrow</button><button class="control" type="button"
                                 data-scale="wide">Wide</button></div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="service-section trim-composer-section" id="trim-composer">
-            <div class="container">
-                <h2 class="title">Frame the opening.</h2>
-                <div class="mechanic trim-composer premium-trim" data-trim-style="standard">
-                    <div class="trim-cutaway" data-bg="assets/images/installation/trim-composer.webp">
-                        <div class="cutaway-wall"></div>
-                        <div class="window-unit"><i class="window-glass"></i><i
-                                class="window-casing casing-top"></i><i class="window-casing casing-right"></i><i
-                                class="window-casing casing-bottom"></i><i
-                                class="window-casing casing-left"></i><i class="window-reveal"></i></div>
-                        <div class="cutaway-edge"></div><span class="detail-label label-reveal">reveal</span><span
-                            class="detail-label label-casing">casing</span><span
-                            class="detail-label label-sill">sill</span>
-                    </div>
-                    <div class="trim-controls"><button class="control" type="button"
-                            data-trim="slim">Slim</button><button class="control active" type="button"
-                            data-trim="standard">Standard</button><button class="control" type="button"
-                            data-trim="bold">Bold</button></div>
                 </div>
             </div>
         </section>
