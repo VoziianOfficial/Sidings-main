@@ -150,4 +150,20 @@
       galleries.forEach((gallery) => galleryObserver.observe(gallery));
     }
   }
+
+  const packageGrids = document.querySelectorAll('.package-grid');
+  if (packageGrids.length) {
+    if (!('IntersectionObserver' in window)) {
+      packageGrids.forEach((grid) => grid.classList.add('is-visible'));
+    } else {
+      const packageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.2 });
+      packageGrids.forEach((grid) => packageObserver.observe(grid));
+    }
+  }
 }());

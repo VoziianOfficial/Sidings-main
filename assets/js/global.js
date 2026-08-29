@@ -41,6 +41,148 @@
     document.querySelectorAll('[data-disclaimer]').forEach((el) => { el.textContent = disclaimer; });
   }
 
+  const initBeforeAfter = (root) => {
+    if (!root || root.dataset.beforeAfterReady === 'true') return;
+    const stage = root.querySelector('.before-after-media');
+    const handle = root.querySelector('.before-after-handle');
+    if (!stage || !handle) return;
+    root.dataset.beforeAfterReady = 'true';
+
+    const min = Number(handle.getAttribute('aria-valuemin')) || 2;
+    const max = Number(handle.getAttribute('aria-valuemax')) || 98;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const hoverQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+    let current = 50;
+    let target = 50;
+    let rect = stage.getBoundingClientRect();
+    let frame = 0;
+    let dragging = false;
+    let introDone = false;
+    let userControlled = false;
+
+    const clamp = (value) => Math.min(max, Math.max(min, value));
+    const syncRect = () => { rect = stage.getBoundingClientRect(); };
+    const commit = (value) => {
+      current = clamp(value);
+      root.style.setProperty('--before-after-pos', `${current.toFixed(2)}%`);
+      handle.setAttribute('aria-valuenow', String(Math.round(current)));
+    };
+    const requestCommit = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        const delta = target - current;
+        if (Math.abs(delta) < .08) {
+          commit(target);
+          return;
+        }
+        commit(current + delta * .22);
+        requestCommit();
+      });
+    };
+    const setTarget = (value, immediate = false) => {
+      target = clamp(value);
+      if (immediate) {
+        if (frame) window.cancelAnimationFrame(frame);
+        frame = 0;
+        commit(target);
+        return;
+      }
+      requestCommit();
+    };
+    const valueFromClientX = (clientX) => {
+      const width = rect.width || 1;
+      return ((clientX - rect.left) / width) * 100;
+    };
+    const takeControl = () => {
+      userControlled = true;
+      introDone = true;
+      root.classList.add('is-user-controlled');
+    };
+    const animateIntro = () => {
+      if (introDone || userControlled || reduceMotion.matches) return;
+      introDone = true;
+      const keyframes = [[0, 25], [.52, 65], [1, 50]];
+      const duration = 1800;
+      const started = performance.now();
+      const ease = (x) => (x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+      const step = (now) => {
+        if (userControlled) return;
+        const progress = Math.min(1, (now - started) / duration);
+        let from = keyframes[0];
+        let to = keyframes[1];
+        if (progress > keyframes[1][0]) {
+          from = keyframes[1];
+          to = keyframes[2];
+        }
+        const local = (progress - from[0]) / (to[0] - from[0]);
+        const eased = ease(Math.max(0, Math.min(1, local)));
+        setTarget(from[1] + (to[1] - from[1]) * eased);
+        if (progress < 1) window.requestAnimationFrame(step);
+      };
+      setTarget(25, true);
+      window.requestAnimationFrame(step);
+    };
+
+    commit(current);
+    stage.addEventListener('pointerenter', (event) => {
+      syncRect();
+      root.classList.add('is-hovered');
+      if (hoverQuery.matches && !dragging) setTarget(valueFromClientX(event.clientX));
+    });
+    stage.addEventListener('pointerleave', () => {
+      root.classList.remove('is-hovered');
+    });
+    stage.addEventListener('pointermove', (event) => {
+      if (!dragging && !hoverQuery.matches) return;
+      if (dragging) takeControl();
+      setTarget(valueFromClientX(event.clientX));
+    }, { passive: true });
+    stage.addEventListener('pointerdown', (event) => {
+      if (event.button !== undefined && event.button !== 0) return;
+      syncRect();
+      dragging = true;
+      takeControl();
+      root.classList.add('is-dragging');
+      stage.setPointerCapture?.(event.pointerId);
+      setTarget(valueFromClientX(event.clientX));
+    });
+    const stopDrag = (event) => {
+      if (!dragging) return;
+      dragging = false;
+      root.classList.remove('is-dragging');
+      if (stage.hasPointerCapture?.(event.pointerId)) stage.releasePointerCapture(event.pointerId);
+    };
+    stage.addEventListener('pointerup', stopDrag);
+    stage.addEventListener('pointercancel', stopDrag);
+    handle.addEventListener('keydown', (event) => {
+      const keys = ['ArrowLeft', 'ArrowDown', 'ArrowRight', 'ArrowUp', 'Home', 'End'];
+      if (!keys.includes(event.key)) return;
+      event.preventDefault();
+      takeControl();
+      const step = event.shiftKey ? 10 : 4;
+      const next = event.key === 'Home' ? min : event.key === 'End' ? max : event.key === 'ArrowRight' || event.key === 'ArrowUp' ? target + step : target - step;
+      setTarget(next, event.key === 'Home' || event.key === 'End');
+    });
+    window.addEventListener('resize', syncRect, { passive: true });
+
+    if (!('IntersectionObserver' in window)) {
+      root.classList.add('is-visible');
+      animateIntro();
+    } else {
+      const observer = new IntersectionObserver((entries, instance) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          root.classList.add('is-visible');
+          window.setTimeout(animateIntro, 260);
+          instance.unobserve(root);
+        });
+      }, { threshold: 0.28 });
+      observer.observe(root);
+    }
+  };
+  document.querySelectorAll('[data-before-after]').forEach(initBeforeAfter);
+
   const setupMarquees = () => {
     document.querySelectorAll('.marquee').forEach((marquee) => {
       if (marquee.dataset.marqueeReady === 'true') return;
