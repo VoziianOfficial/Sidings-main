@@ -425,6 +425,8 @@
         swapTimer = window.setTimeout(() => {
           copyEl.innerHTML = source.copy;
           mediaEl.innerHTML = source.media;
+          window.applySiteConfig?.(copyEl);
+          window.applySiteConfig?.(mediaEl);
           copyEl.classList.remove('is-leaving');
           mediaEl.classList.remove('is-leaving');
           copyEl.classList.add('is-entering');

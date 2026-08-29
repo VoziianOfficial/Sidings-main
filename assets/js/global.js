@@ -3,47 +3,97 @@
   if (window.__SITE_GLOBAL_READY__) return;
   window.__SITE_GLOBAL_READY__ = true;
 
-  const config = window.SiteConfig || {};
-
   const clean = (value) => (typeof value === 'string' ? value.trim() : '');
-  const companyName = clean(config.companyName);
-  const logo = clean(config.logo);
-  const favicon = clean(config.favicon);
-  const email = clean(config.email);
-  const disclaimer = clean(config.disclaimer);
-  const browserTitle = clean(config.browserTitle);
-  const pageTitle = clean(document.body?.dataset.pageTitle);
-
-  if (browserTitle) {
-    document.title = pageTitle ? `${browserTitle} | ${pageTitle}` : browserTitle;
-  }
-  if (favicon) {
-    document.querySelectorAll('link[rel*="icon"]').forEach((icon) => { icon.href = favicon; });
-  }
-  if (companyName) {
-    document.querySelectorAll('[data-company]').forEach((el) => { el.textContent = companyName; });
-  }
-  if (logo) {
-    document.querySelectorAll('[data-logo]').forEach((el) => {
-      el.src = logo;
-      if (!el.alt && companyName) el.alt = companyName;
-    });
-  }
-  document.querySelectorAll('[data-email]').forEach((el) => {
-    if (!email) {
-      el.removeAttribute('href');
-      return;
-    }
-    el.textContent = email;
-    el.href = `mailto:${email.replace(/[\r\n]/g, '')}`;
+  const getConfigValue = (key) => clean(window.SiteConfig?.[key]);
+  const getSiteConfig = () => ({
+    companyName: getConfigValue('companyName'),
+    logo: getConfigValue('logo'),
+    favicon: getConfigValue('favicon'),
+    email: getConfigValue('email'),
+    disclaimer: getConfigValue('disclaimer'),
+    browserTitle: getConfigValue('browserTitle')
   });
-  if (disclaimer) {
-    document.querySelectorAll('[data-disclaimer]').forEach((el) => { el.textContent = disclaimer; });
+  const safeMailto = (value) => clean(value).replace(/[\r\n]/g, '');
+  const fillTemplate = (template, values) => clean(template).replace(/\{(companyName|email|disclaimer|browserTitle)\}/g, (match, key) => values[key] || '');
+
+  function applySiteConfig(root = document) {
+    const values = getSiteConfig();
+    const scope = root instanceof Document || root instanceof DocumentFragment || root instanceof HTMLElement ? root : document;
+    const findAll = (selector) => {
+      const elements = [...scope.querySelectorAll(selector)];
+      if (scope instanceof HTMLElement && scope.matches(selector)) elements.unshift(scope);
+      return elements;
+    };
+
+    const pageTitle = clean(document.body?.dataset.pageTitle);
+    if (values.browserTitle) {
+      document.title = pageTitle && pageTitle.toLowerCase() !== 'home'
+        ? `${pageTitle} | ${values.browserTitle}`
+        : values.browserTitle;
+    }
+
+    document.querySelectorAll('link[rel*="icon"]').forEach((icon) => {
+      if (values.favicon) icon.href = values.favicon;
+      else icon.removeAttribute('href');
+    });
+
+    findAll('[data-config]').forEach((el) => {
+      const key = clean(el.dataset.config);
+      if (!Object.prototype.hasOwnProperty.call(values, key)) return;
+      el.textContent = values[key] || '';
+    });
+
+    if (values.companyName) {
+      findAll('[data-company]').forEach((el) => { el.textContent = values.companyName; });
+    } else {
+      findAll('[data-company]').forEach((el) => { el.textContent = ''; });
+    }
+
+    findAll('[data-config-template]').forEach((el) => {
+      el.textContent = fillTemplate(el.dataset.configTemplate, values);
+    });
+    findAll('[data-config-aria-template]').forEach((el) => {
+      const label = fillTemplate(el.dataset.configAriaTemplate, values);
+      if (label) el.setAttribute('aria-label', label);
+      else el.removeAttribute('aria-label');
+    });
+    findAll('[data-config-alt-template]').forEach((el) => {
+      el.alt = fillTemplate(el.dataset.configAltTemplate, values);
+    });
+
+    findAll('[data-logo], [data-config-logo]').forEach((el) => {
+      if (!values.logo) {
+        el.removeAttribute('src');
+        el.hidden = true;
+        return;
+      }
+      el.hidden = false;
+      el.src = values.logo;
+      if (values.companyName && (!el.alt || el.hasAttribute('data-logo') || el.hasAttribute('data-config-logo'))) {
+        el.alt = values.companyName;
+      }
+    });
+
+    findAll('[data-email], [data-mobile-email], [data-config-email-link]').forEach((el) => {
+      const mailto = safeMailto(values.email);
+      el.textContent = values.email || '';
+      if (mailto) el.href = `mailto:${mailto}`;
+      else el.removeAttribute('href');
+    });
+
+    if (values.disclaimer) {
+      findAll('[data-disclaimer]').forEach((el) => { el.textContent = values.disclaimer; });
+    } else {
+      findAll('[data-disclaimer]').forEach((el) => { el.textContent = ''; });
+    }
   }
+
+  window.applySiteConfig = applySiteConfig;
+  applySiteConfig();
 
   const initConsentCard = () => {
-    if (window.__SIDINGS_CONSENT_READY__) return;
-    window.__SIDINGS_CONSENT_READY__ = true;
+    if (window.__SITE_CONSENT_READY__) return;
+    window.__SITE_CONSENT_READY__ = true;
 
     const storageKey = 'sidingsConsent';
     const getConsent = () => {
@@ -419,7 +469,7 @@
     mobileMenu.setAttribute('aria-modal', 'true');
     mobileMenu.setAttribute('aria-hidden', 'true');
     mobileMenu.setAttribute('aria-labelledby', 'mobile-menu-title');
-    const brandMarkup = document.querySelector('.header-wrap > .brand')?.innerHTML || `<span data-company>${companyName || 'SIDINGS'}</span>`;
+    const brandMarkup = document.querySelector('.header-wrap > .brand')?.innerHTML || '<span data-company></span>';
     mobileMenu.innerHTML = `
       <div class="mobile-menu-panel">
         <h2 class="mobile-menu-title" id="mobile-menu-title">Menu</h2>
@@ -446,7 +496,7 @@
         </nav>
         <div class="mobile-menu-footer">
           <a class="mobile-menu-cta" href="index.html#contact">Start a project</a>
-          <a class="mobile-menu-email" data-mobile-email href="${email ? `mailto:${email.replace(/[\r\n]/g, '')}` : '#'}">${email || 'Contact SIDINGS'}</a>
+          <a class="mobile-menu-email" data-mobile-email></a>
           <div class="mobile-menu-legal" aria-label="Legal links">
             <a href="privacy-policy.html">Privacy</a>
             <a href="terms.html">Terms</a>
@@ -456,6 +506,7 @@
       </div>
     `;
     document.body.append(mobileMenu);
+    applySiteConfig(mobileMenu);
     mobilePanel = mobileMenu.querySelector('.mobile-menu-panel');
     mobileServices = mobileMenu.querySelector('.mobile-services');
     mobileServicesPanel = mobileMenu.querySelector('.mobile-services-panel');
@@ -747,8 +798,9 @@
     searchOverlay.setAttribute('aria-modal', 'true');
     searchOverlay.setAttribute('aria-hidden', 'true');
     searchOverlay.setAttribute('aria-labelledby', 'site-search-title');
-    searchOverlay.innerHTML = `<div class="search-panel"><button class="search-close" type="button" aria-label="Close search">${closeIcon}</button><div class="search-head"><p class="search-kicker">SIDINGS index</p><h2 id="site-search-title">Search SIDINGS</h2></div><div class="search-field">${searchIcon}<input class="search-input" type="search" autocomplete="off" spellcheck="false" placeholder="Search pages, services, materials..." aria-label="Search SIDINGS" aria-controls="site-search-results" aria-autocomplete="list"><kbd>ESC</kbd></div><div class="search-results" id="site-search-results" role="listbox" aria-label="Search results"></div></div>`;
+    searchOverlay.innerHTML = `<div class="search-panel"><button class="search-close" type="button" aria-label="Close search">${closeIcon}</button><div class="search-head"><p class="search-kicker" data-config-template="{companyName} index"></p><h2 id="site-search-title" data-config-template="Search {companyName}"></h2></div><div class="search-field">${searchIcon}<input class="search-input" type="search" autocomplete="off" spellcheck="false" placeholder="Search pages, services, materials..." data-config-aria-template="Search {companyName}" aria-controls="site-search-results" aria-autocomplete="list"><kbd>ESC</kbd></div><div class="search-results" id="site-search-results" role="listbox" aria-label="Search results"></div></div>`;
     document.body.append(searchOverlay);
+    applySiteConfig(searchOverlay);
     searchInput = searchOverlay.querySelector('.search-input');
     searchResults = searchOverlay.querySelector('.search-results');
     searchClose = searchOverlay.querySelector('.search-close');
