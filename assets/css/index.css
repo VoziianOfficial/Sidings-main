@@ -337,3 +337,25 @@
   .faq-panel{padding:24px 18px}
   .mosaic-cta{margin-inline:auto}
 }
+
+/* Mobile/tablet scroll stability */
+@media(max-width:1024px){
+  .hero{height:min(760px,calc(100svh - 7px));min-height:540px}
+  .billboard{transform:none!important}
+  .billboard .strip,.billboard .strip-panel,.billboard .strip-face{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+  .billboard .strip:after{display:none}
+  .billboard .strip:not(.is-flipping) .strip-panel{will-change:auto}
+  .faq-photo{will-change:auto;transform:none!important}
+  .service-card,.expand-card,.project,.process-stage{transition-property:background,transform,box-shadow,opacity}
+}
+
+@media(max-width:768px){
+  .hero{height:auto;min-height:540px}
+  .billboard-wipe{display:none}
+  .approach-parallax-img{top:0;height:100%;transform:none!important;will-change:auto}
+  .marquee-track{will-change:auto}
+}
+
+@media(max-width:430px){
+  .hero{min-height:520px}
+}

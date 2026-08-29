@@ -76,9 +76,15 @@
     const setImageLayer = (img, src) => {
       if (img.getAttribute('src') !== src) img.src = src;
     };
+    let billboardRect = { width: 0, height: 0 };
+    const measureBillboard = () => {
+      billboardRect = {
+        width: Math.round(billboard.clientWidth || 0),
+        height: Math.round(billboard.clientHeight || 0)
+      };
+    };
     const syncSlices = (currentSrc, nextSrc = currentSrc) => {
-      const width = billboard.offsetWidth;
-      const height = billboard.offsetHeight;
+      const { width, height } = billboardRect;
       if (!width || !height || !strips.length) return;
       const baseHeight = height / strips.length;
       strips.forEach((strip, itemIndex) => {
@@ -152,11 +158,13 @@
     const setupBillboard = () => {
       if (!images.length) return;
       Promise.all(images.map(preloadImage)).then(() => {
+        measureBillboard();
         setImageLayer(currentImage, images[index]);
         syncSlices(images[index], images[index]);
         billboard.classList.add('is-loaded');
         scheduleAutoplay();
       }).catch(() => {
+        measureBillboard();
         setImageLayer(currentImage, images[index]);
         syncSlices(images[index], images[index]);
       });
@@ -168,6 +176,7 @@
       billboard.classList.remove('is-transitioning');
       window.clearTimeout(resizeTimer);
       resizeTimer = window.setTimeout(() => {
+        measureBillboard();
         syncSlices(images[index], images[index]);
         isTransitioning = false;
         isResizing = false;
@@ -177,17 +186,24 @@
     window.addEventListener('resize', handleResize, { passive: true });
     window.addEventListener('orientationchange', handleResize, { passive: true });
     setupBillboard();
+    const billboardMotionQuery = window.matchMedia('(min-width: 1025px) and (prefers-reduced-motion: no-preference)');
     let billboardTicking = false;
     const syncBillboard = () => {
-      billboard.style.transform = `scale(${1 + Math.min(window.scrollY, 800) / 30000})`;
       billboardTicking = false;
+      if (!billboardMotionQuery.matches) {
+        billboard.style.transform = '';
+        return;
+      }
+      billboard.style.transform = `translate3d(0,0,0) scale(${1 + Math.min(window.scrollY, 800) / 30000})`;
     };
-    window.addEventListener('scroll', () => {
+    const requestBillboardSync = () => {
       if (billboardTicking) return;
       billboardTicking = true;
       window.requestAnimationFrame(syncBillboard);
-    }, { passive: true });
-    syncBillboard();
+    };
+    window.addEventListener('scroll', requestBillboardSync, { passive: true });
+    billboardMotionQuery.addEventListener?.('change', requestBillboardSync);
+    requestBillboardSync();
   }
 
   document.querySelectorAll('button[data-material]').forEach((button) => {

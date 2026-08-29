@@ -263,6 +263,8 @@
     }, { passive: true });
     stage.addEventListener('pointerdown', (event) => {
       if (event.button !== undefined && event.button !== 0) return;
+      const controlTarget = event.target.closest?.('.before-after-handle, .before-after-divider');
+      if (event.pointerType === 'touch' && !controlTarget) return;
       syncRect();
       dragging = true;
       takeControl();

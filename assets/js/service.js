@@ -103,44 +103,98 @@
   const parallaxImages = [...document.querySelectorAll('[data-parallax-image]')];
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (parallaxImages.length) {
+    const mobileParallaxQuery = window.matchMedia('(max-width: 768px)');
+    const metrics = new Map();
     const activeImages = new Set();
     let ticking = false;
-    const updateParallax = () => {
-      ticking = false;
-      if (reduceMotion.matches) return;
-      const viewport = window.innerHeight || document.documentElement.clientHeight;
-      const strength = window.innerWidth < 620 ? 12 : window.innerWidth < 1024 ? 18 : 34;
-      activeImages.forEach((image) => {
+    let measureFrame = 0;
+    let staticParallaxApplied = false;
+    const setStaticParallax = () => {
+      staticParallaxApplied = true;
+      parallaxImages.forEach((image) => {
+        image.style.transform = '';
+        image.style.willChange = 'auto';
+      });
+    };
+    const measureParallax = () => {
+      measureFrame = 0;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+      parallaxImages.forEach((image) => {
         const frame = image.parentElement;
         if (!frame) return;
         const rect = frame.getBoundingClientRect();
-        const progress = ((rect.top + rect.height / 2) - viewport / 2) / (viewport + rect.height);
+        metrics.set(image, {
+          top: rect.top + scrollTop,
+          height: rect.height || frame.offsetHeight || 1
+        });
+      });
+    };
+    const requestMeasure = () => {
+      if (measureFrame) return;
+      measureFrame = window.requestAnimationFrame(measureParallax);
+    };
+    const updateParallax = () => {
+      ticking = false;
+      if (reduceMotion.matches || mobileParallaxQuery.matches) {
+        setStaticParallax();
+        return;
+      }
+      staticParallaxApplied = false;
+      const viewport = window.innerHeight || document.documentElement.clientHeight;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+      const strength = window.innerWidth < 1024 ? 10 : 34;
+      activeImages.forEach((image) => {
+        const item = metrics.get(image);
+        if (!item) return;
+        const top = item.top - scrollTop;
+        const progress = ((top + item.height / 2) - viewport / 2) / (viewport + item.height);
         const offset = Math.max(-1, Math.min(1, progress)) * -strength;
+        image.style.willChange = 'transform';
         image.style.transform = `translate3d(0, ${offset.toFixed(2)}px, 0) scale(1.04)`;
       });
     };
     const requestParallax = () => {
-      if (ticking || reduceMotion.matches) return;
+      if ((reduceMotion.matches || mobileParallaxQuery.matches) && staticParallaxApplied) return;
+      if (ticking) return;
       ticking = true;
       window.requestAnimationFrame(updateParallax);
     };
+    measureParallax();
     if (!('IntersectionObserver' in window)) {
       parallaxImages.forEach((image) => activeImages.add(image));
       requestParallax();
     } else {
       const parallaxObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) activeImages.add(entry.target);
-          else activeImages.delete(entry.target);
+          if (entry.isIntersecting) {
+            activeImages.add(entry.target);
+          } else {
+            activeImages.delete(entry.target);
+            entry.target.style.willChange = 'auto';
+          }
         });
+        requestMeasure();
         requestParallax();
       }, { rootMargin: '18% 0px' });
       parallaxImages.forEach((image) => parallaxObserver.observe(image));
     }
     window.addEventListener('scroll', requestParallax, { passive: true });
-    window.addEventListener('resize', requestParallax);
+    window.addEventListener('resize', () => {
+      requestMeasure();
+      requestParallax();
+    }, { passive: true });
+    window.addEventListener('load', () => {
+      requestMeasure();
+      requestParallax();
+    }, { passive: true });
+    mobileParallaxQuery.addEventListener?.('change', () => {
+      staticParallaxApplied = false;
+      requestMeasure();
+      requestParallax();
+    });
     reduceMotion.addEventListener?.('change', () => {
-      if (reduceMotion.matches) parallaxImages.forEach((image) => { image.style.transform = ''; });
+      staticParallaxApplied = false;
+      if (reduceMotion.matches) setStaticParallax();
       else requestParallax();
     });
   }
@@ -276,6 +330,10 @@
         loop: true,
         speed: 620,
         grabCursor: true,
+        autoHeight: false,
+        observer: false,
+        observeParents: false,
+        resizeObserver: true,
         navigation: {
           nextEl: visual?.querySelector('.compose-next') || null,
           prevEl: visual?.querySelector('.compose-prev') || null,
