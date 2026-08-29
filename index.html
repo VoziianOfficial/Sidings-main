@@ -21,6 +21,7 @@
     <script defer src="config/config.js"></script>
     <script defer src="assets/js/global.js"></script>
     <script defer src="assets/js/index.js"></script>
+    <script defer src="assets/js/service.js?v=insights-parallax"></script>
     <title>Home</title>
 </head>
 
@@ -443,6 +444,119 @@
                         </svg></button>
                     <div class="form-result" aria-live="polite"></div>
                 </form>
+            </div>
+        </section>
+        <section class="section white approach-section" id="approach">
+            <div class="container">
+                <div class="approach-parallax"><img class="approach-parallax-img" data-parallax-image
+                        src="assets/images/hero/home-siding-03.webp"
+                        alt="Modern home exterior finished with clean horizontal siding" loading="lazy" width="1920"
+                        height="1280"><span class="approach-parallax-overlay" aria-hidden="true"></span></div>
+                <div class="approach-tabs" role="tablist" aria-label="Why homeowners choose SIDINGS">
+                    <button class="approach-tab is-active" type="button" role="tab" id="approach-tab-craft"
+                        aria-selected="true" aria-controls="approach-panel" data-tab="craft"><span
+                            class="approach-tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+                                <path d="M3 21h18"></path>
+                                <path d="M5 21V9l7-5 7 5v12"></path>
+                                <path d="M9 21v-6h6v6"></path>
+                                <path d="M8 10h8"></path>
+                            </svg></span>Our Approach</button>
+                    <button class="approach-tab" type="button" role="tab" id="approach-tab-choose"
+                        aria-selected="false" aria-controls="approach-panel" tabindex="-1" data-tab="choose"><span
+                            class="approach-tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+                                <path d="M12 3 5 6v6c0 4.5 2.9 7.4 7 9 4.1-1.6 7-4.5 7-9V6l-7-3Z"></path>
+                                <path d="m9 12 2 2 4-5"></path>
+                            </svg></span>Why Choose Us</button>
+                    <button class="approach-tab" type="button" role="tab" id="approach-tab-last" aria-selected="false"
+                        aria-controls="approach-panel" tabindex="-1" data-tab="last"><span class="approach-tab-icon"
+                            aria-hidden="true"><svg viewBox="0 0 24 24">
+                                <path d="M12 3 3 8l9 5 9-5-9-5Z"></path>
+                                <path d="m3 12 9 5 9-5"></path>
+                                <path d="m3 16 9 5 9-5"></path>
+                            </svg></span>Built To Last</button>
+                </div>
+                <div class="approach-panels">
+                    <div class="approach-copy" id="approach-panel" role="tabpanel"
+                        aria-labelledby="approach-tab-craft">
+                        <p class="kicker">How We Work</p>
+                        <h2 class="title">A process built around your facade.</h2>
+                        <p class="copy">Every job starts with a full read of the elevation — orientation, existing
+                            material, window lines and the conditions it faces — before a single panel is measured or
+                            cut.</p>
+                        <ul class="approach-list">
+                            <li><span class="approach-list-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+                                        <path d="M20 6 9 17l-5-5"></path>
+                                    </svg></span>Full elevation walkthrough before work begins</li>
+                            <li><span class="approach-list-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+                                        <path d="M20 6 9 17l-5-5"></path>
+                                    </svg></span>Panels measured, aligned and dry-fit first</li>
+                            <li><span class="approach-list-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+                                        <path d="M20 6 9 17l-5-5"></path>
+                                    </svg></span>Trim, corners and openings planned as one system</li>
+                            <li><span class="approach-list-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+                                        <path d="M20 6 9 17l-5-5"></path>
+                                    </svg></span>Clear timeline shared before installation starts</li>
+                        </ul>
+                    </div>
+                    <div class="approach-media"><img
+                            src="assets/images/service-insights/installation-panel-install.webp"
+                            alt="Installers aligning new siding panels on a modern home exterior" loading="lazy"
+                            width="1600" height="700"></div>
+                </div>
+                <div class="approach-source" hidden>
+                    <template data-approach-source="choose">
+                        <div data-copy>
+                            <p class="kicker">Why SIDINGS</p>
+                            <h2 class="title">Craft you can see, protection you can trust.</h2>
+                            <p class="copy">Licensed installers, weather-tested materials and a workmanship guarantee
+                                back every project — so the finish looks calm today and holds up through every
+                                season.</p>
+                            <ul class="approach-list">
+                                <li><span class="approach-list-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+                                            <path d="M20 6 9 17l-5-5"></path>
+                                        </svg></span>Licensed, insured installation crews</li>
+                                <li><span class="approach-list-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+                                            <path d="M20 6 9 17l-5-5"></path>
+                                        </svg></span>Materials matched to your climate and budget</li>
+                                <li><span class="approach-list-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+                                            <path d="M20 6 9 17l-5-5"></path>
+                                        </svg></span>Workmanship backed by a written guarantee</li>
+                                <li><span class="approach-list-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+                                            <path d="M20 6 9 17l-5-5"></path>
+                                        </svg></span>Clean job sites, respected timelines</li>
+                            </ul>
+                        </div>
+                        <div data-media><img src="assets/images/service-insights/repair-finish-protection.webp"
+                                alt="Finished siding repair with clean trim and protected exterior corner"
+                                loading="lazy" width="1600" height="700"></div>
+                    </template>
+                    <template data-approach-source="last">
+                        <div data-copy>
+                            <p class="kicker">Long-Term Performance</p>
+                            <h2 class="title">Panels chosen to outlast the season.</h2>
+                            <p class="copy">From reveal width to fastening depth, every detail is set for durability —
+                                so the facade keeps its rhythm, sheds weather cleanly and needs less upkeep over
+                                time.</p>
+                            <ul class="approach-list">
+                                <li><span class="approach-list-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+                                            <path d="M20 6 9 17l-5-5"></path>
+                                        </svg></span>Profiles selected for climate and exposure</li>
+                                <li><span class="approach-list-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+                                            <path d="M20 6 9 17l-5-5"></path>
+                                        </svg></span>Flashing and overlaps detailed for drainage</li>
+                                <li><span class="approach-list-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+                                            <path d="M20 6 9 17l-5-5"></path>
+                                        </svg></span>Fasteners set for long-term panel stability</li>
+                                <li><span class="approach-list-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+                                            <path d="M20 6 9 17l-5-5"></path>
+                                        </svg></span>Low-maintenance finishes that hold their color</li>
+                            </ul>
+                        </div>
+                        <div data-media><img src="assets/images/service-insights/installation-material-guide.webp"
+                                alt="Siding profiles, trim samples and measuring tools beside an exterior wall"
+                                loading="lazy" width="1600" height="876"></div>
+                    </template>
+                </div>
             </div>
         </section>
     </main>

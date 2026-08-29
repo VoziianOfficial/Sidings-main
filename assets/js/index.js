@@ -378,4 +378,80 @@
     }
   }
 
+  const approachSection = document.querySelector('.approach-section');
+  if (approachSection) {
+    const tabs = [...approachSection.querySelectorAll('[data-tab]')];
+    const copyEl = approachSection.querySelector('.approach-copy');
+    const mediaEl = approachSection.querySelector('.approach-media');
+    const activeTab = tabs.find((tab) => tab.classList.contains('is-active')) || tabs[0];
+
+    if (tabs.length && copyEl && mediaEl && activeTab) {
+      const sources = new Map();
+      sources.set(activeTab.dataset.tab, { copy: copyEl.innerHTML, media: mediaEl.innerHTML });
+      approachSection.querySelectorAll('template[data-approach-source]').forEach((template) => {
+        const content = template.content;
+        sources.set(template.dataset.approachSource, {
+          copy: content.querySelector('[data-copy]')?.innerHTML || '',
+          media: content.querySelector('[data-media]')?.innerHTML || '',
+        });
+      });
+
+      const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let isAnimating = false;
+      let swapTimer = 0;
+      let settleTimer = 0;
+
+      const activateTab = (tab, { focus = false } = {}) => {
+        if (!tab || isAnimating || tab.classList.contains('is-active')) return;
+        const source = sources.get(tab.dataset.tab);
+        if (!source) return;
+        isAnimating = true;
+
+        tabs.forEach((item) => {
+          const isActive = item === tab;
+          item.classList.toggle('is-active', isActive);
+          item.setAttribute('aria-selected', String(isActive));
+          item.tabIndex = isActive ? 0 : -1;
+        });
+        copyEl.setAttribute('aria-labelledby', tab.id);
+
+        const swapDelay = reduceMotionQuery.matches ? 0 : 260;
+        const settleDelay = reduceMotionQuery.matches ? 0 : 420;
+
+        copyEl.classList.add('is-leaving');
+        mediaEl.classList.add('is-leaving');
+        window.clearTimeout(swapTimer);
+        window.clearTimeout(settleTimer);
+        swapTimer = window.setTimeout(() => {
+          copyEl.innerHTML = source.copy;
+          mediaEl.innerHTML = source.media;
+          copyEl.classList.remove('is-leaving');
+          mediaEl.classList.remove('is-leaving');
+          copyEl.classList.add('is-entering');
+          mediaEl.classList.add('is-entering');
+          void copyEl.offsetWidth;
+          copyEl.classList.remove('is-entering');
+          mediaEl.classList.remove('is-entering');
+          if (focus) tab.focus();
+          settleTimer = window.setTimeout(() => { isAnimating = false; }, settleDelay);
+        }, swapDelay);
+      };
+
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => activateTab(tab));
+        tab.addEventListener('keydown', (event) => {
+          const keys = ['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp', 'Home', 'End'];
+          if (!keys.includes(event.key)) return;
+          event.preventDefault();
+          const lastIndex = tabs.length - 1;
+          const nextIndex = event.key === 'Home' ? 0
+            : event.key === 'End' ? lastIndex
+              : (event.key === 'ArrowRight' || event.key === 'ArrowDown') ? (index + 1) % tabs.length
+                : (index - 1 + tabs.length) % tabs.length;
+          activateTab(tabs[nextIndex], { focus: true });
+        });
+      });
+    }
+  }
+
 }());

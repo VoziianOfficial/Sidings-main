@@ -10,12 +10,24 @@
   });
   document.querySelectorAll('[data-scale]').forEach((button) => { button.type = 'button'; button.setAttribute('aria-pressed', String(button.classList.contains('active'))); button.addEventListener('click', () => { const lab = button.closest('.premium-scale'); const group = button.closest('.material-controls'); if (group) group.querySelectorAll('[data-scale]').forEach((item) => { const isActive = item === button; item.classList.toggle('active', isActive); item.setAttribute('aria-pressed', String(isActive)); }); else setActive('[data-scale]', button); if (lab) lab.dataset.profile = button.dataset.scale; }); });
   document.querySelectorAll('[data-trim]').forEach((button) => { button.type = 'button'; button.setAttribute('aria-pressed', String(button.classList.contains('active'))); button.addEventListener('click', () => { setActive('[data-trim]', button); const composer = document.querySelector('.premium-trim'); if (composer) composer.dataset.trimStyle = button.dataset.trim; }); });
-  const zoning = document.querySelector('.premium-zoning');
-  const zoneName = document.querySelector('[data-zone-name]');
-  const zoneCopy = document.querySelector('[data-zone-copy]');
   const zoneContent = { main: ['Main Wall', 'The primary wall establishes the facade’s panel rhythm and overall proportion.'], gable: ['Gable', 'The gable closes the roof geometry and shifts the facade into a more vertical cadence.'], corners: ['Corners', 'Corner trim resolves the meeting point of each siding plane into one controlled edge.'], openings: ['Openings', 'Windows and doors break the field of panels with measured, protected cut lines.'], trim: ['Trim', 'Trim provides a precise visual boundary between panels, openings and roof lines.'] };
-  const activateZone = (button) => { const zone = button.dataset.zoneControl; if (!zoning || !zoneContent[zone] || !zoneName || !zoneCopy) return; zoning.dataset.zone = zone; zoneName.textContent = zoneContent[zone][0]; zoneCopy.textContent = zoneContent[zone][1]; setActive('[data-zone-control]', button); };
-  document.querySelectorAll('[data-zone-control]').forEach((button) => { button.type = 'button'; button.setAttribute('aria-pressed', String(zoning?.dataset.zone === button.dataset.zoneControl)); button.addEventListener('click', () => activateZone(button)); button.addEventListener('pointerenter', () => activateZone(button)); });
+  const activateZone = (button) => {
+    const zoning = button.closest('.premium-zoning');
+    const zone = button.dataset.zoneControl;
+    const zoneName = zoning?.querySelector('[data-zone-name]');
+    const zoneCopy = zoning?.querySelector('[data-zone-copy]');
+    const content = [button.dataset.zoneTitle || zoneContent[zone]?.[0], button.dataset.zoneCopyText || zoneContent[zone]?.[1]];
+    if (!zoning || !zone || !content[0] || !content[1] || !zoneName || !zoneCopy) return;
+    zoning.dataset.zone = zone;
+    zoneName.textContent = content[0];
+    zoneCopy.textContent = content[1];
+    zoning.querySelectorAll('[data-zone-control]').forEach((item) => {
+      const isActive = item === button;
+      item.classList.toggle('active', isActive);
+      item.setAttribute('aria-pressed', String(isActive));
+    });
+  };
+  document.querySelectorAll('[data-zone-control]').forEach((button) => { const zoning = button.closest('.premium-zoning'); button.type = 'button'; button.setAttribute('aria-pressed', String(zoning?.dataset.zone === button.dataset.zoneControl)); button.addEventListener('click', () => activateZone(button)); button.addEventListener('pointerenter', () => activateZone(button)); });
   const initServiceAccordion = (accordion) => {
     const panels = [...accordion.querySelectorAll('.gallery-panel')];
     if (!panels.length) return;
