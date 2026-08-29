@@ -181,15 +181,55 @@
     }
   }
 
+  const animatePackageAmounts = (grid) => {
+    if (grid.dataset.amountsCounted === 'true') return;
+    grid.dataset.amountsCounted = 'true';
+    const amounts = [...grid.querySelectorAll('.package-amount')];
+    amounts.forEach((amount, index) => {
+      const finalText = amount.textContent.trim();
+      const valueMatch = finalText.match(/\d[\d,.\s]*/);
+      if (!valueMatch) return;
+      const target = Number(valueMatch[0].replace(/[^\d.]/g, ''));
+      if (!Number.isFinite(target)) return;
+      const prefix = finalText.slice(0, valueMatch.index);
+      const suffix = finalText.slice(valueMatch.index + valueMatch[0].length);
+      const format = (value) => `${prefix}${Math.round(value).toLocaleString('en-US')}${suffix}`;
+      if (reduceMotion.matches) {
+        amount.textContent = finalText;
+        return;
+      }
+      const duration = 1150;
+      const delay = index * 120;
+      const startedAt = performance.now() + delay;
+      const easeOut = (value) => 1 - Math.pow(1 - value, 3);
+      amount.textContent = format(0);
+      const tick = (now) => {
+        if (now < startedAt) {
+          window.requestAnimationFrame(tick);
+          return;
+        }
+        const progress = Math.min(1, (now - startedAt) / duration);
+        amount.textContent = format(target * easeOut(progress));
+        if (progress < 1) window.requestAnimationFrame(tick);
+        else amount.textContent = finalText;
+      };
+      window.requestAnimationFrame(tick);
+    });
+  };
+
   const packageGrids = document.querySelectorAll('.package-grid');
   if (packageGrids.length) {
     if (!('IntersectionObserver' in window)) {
-      packageGrids.forEach((grid) => grid.classList.add('is-visible'));
+      packageGrids.forEach((grid) => {
+        grid.classList.add('is-visible');
+        animatePackageAmounts(grid);
+      });
     } else {
       const packageObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           entry.target.classList.add('is-visible');
+          animatePackageAmounts(entry.target);
           observer.unobserve(entry.target);
         });
       }, { threshold: 0.2 });
