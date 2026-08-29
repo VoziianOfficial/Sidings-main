@@ -1,4 +1,4 @@
-/* Edit this file to update brand information across the whole site. */
+
 window.SiteConfig = {
   companyName: 'SIDINGS',
   logo: 'assets/icons/logo.svg',

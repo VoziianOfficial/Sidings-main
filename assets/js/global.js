@@ -844,6 +844,7 @@
 
   searchButtons.forEach((button) => {
     button.type = 'button';
+    button.innerHTML = searchIcon;
     button.setAttribute('aria-label', button.getAttribute('aria-label') || 'Search site');
     button.setAttribute('aria-haspopup', 'dialog');
     button.setAttribute('aria-controls', 'site-search-dialog');

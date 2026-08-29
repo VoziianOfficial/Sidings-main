@@ -267,32 +267,11 @@ button:disabled {
     transition: background .24s ease, color .24s ease, box-shadow .24s ease, transform .24s ease
 }
 
-.search:before {
-    content: "";
-    position: absolute;
-    left: 13px;
-    top: 10px;
-    width: 11px;
-    height: 11px;
-    border: 1.8px solid currentColor;
-    border-radius: 50%;
-    opacity: .92;
-    transition: transform .24s ease, opacity .24s ease
-}
-
-.search:after {
-    content: "";
-    position: absolute;
-    left: 24px;
-    top: 23px;
-    width: 8px;
-    height: 1.8px;
-    border-radius: 999px;
-    background: currentColor;
-    opacity: .92;
-    transform: rotate(45deg);
-    transform-origin: left center;
-    transition: transform .24s ease, opacity .24s ease
+.search .search-lucide {
+    width: 18px;
+    height: 18px;
+    stroke-width: 1.9;
+    transition: transform .24s ease
 }
 
 .search:hover,
@@ -303,16 +282,9 @@ button:disabled {
     transform: translateY(-1px)
 }
 
-.search:hover:before,
-.search:focus-visible:before {
-    opacity: 1;
-    transform: scale(1.04)
-}
-
-.search:hover:after,
-.search:focus-visible:after {
-    opacity: 1;
-    transform: rotate(45deg) scaleX(1.08)
+.search:hover .search-lucide,
+.search:focus-visible .search-lucide {
+    transform: scale(1.08)
 }
 
 .dropdown {
@@ -816,8 +788,8 @@ body.nav-open {
     display: grid;
     width: 100%;
     height: 100dvh;
-    padding: clamp(12px, 2.4vw, 22px);
-    background: rgba(16, 17, 16, .68);
+    padding: 0;
+    background: var(--ink);
     color: #fff;
     opacity: 0;
     pointer-events: none;
@@ -833,18 +805,19 @@ body.nav-open {
 .mobile-menu-panel {
     width: 100%;
     min-width: 0;
-    max-height: calc(100dvh - clamp(24px, 4.8vw, 44px));
+    height: 100dvh;
+    max-height: 100dvh;
     display: grid;
     grid-template-rows: auto minmax(0, 1fr) auto;
     gap: clamp(24px, 5vw, 44px);
-    padding: clamp(18px, 4vw, 40px);
-    border: 1px solid rgba(255, 255, 255, .12);
-    border-radius: clamp(22px, 4vw, 34px);
+    padding: max(18px, env(safe-area-inset-top)) clamp(18px, 4vw, 40px) max(18px, env(safe-area-inset-bottom));
+    border: 0;
+    border-radius: 0;
     background: var(--ink);
-    box-shadow: 0 30px 90px rgba(0, 0, 0, .36), inset 0 1px 0 rgba(255, 255, 255, .08);
+    box-shadow: none;
     overflow-y: auto;
     overscroll-behavior: contain;
-    transform: translateY(22px);
+    transform: translateY(18px);
     transition: transform .6s cubic-bezier(.22, 1, .36, 1)
 }
 
@@ -1127,14 +1100,15 @@ body.nav-open {
 
 @media(max-width:620px) {
     .mobile-menu {
-        padding: 8px
+        padding: 0
     }
 
     .mobile-menu-panel {
-        max-height: calc(100dvh - 16px);
+        height: 100dvh;
+        max-height: 100dvh;
         gap: 22px;
-        padding: 18px 16px;
-        border-radius: 24px
+        padding: max(18px, env(safe-area-inset-top)) 16px max(18px, env(safe-area-inset-bottom));
+        border-radius: 0
     }
 
     .mobile-menu-link,
